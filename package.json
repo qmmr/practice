@@ -1,0 +1,15 @@
+{
+  "name": "practice",
+  "version": "1.0.0",
+  "description": "Practice skills from Node.js course",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "author": "Marcin Kumorek",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "1.19.1"
+  }
+}
