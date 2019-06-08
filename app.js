@@ -1,8 +1,11 @@
 const express = require('express')
+const bodyParser = require('body-parser')
 
 const PORT = process.env.PORT || 3000
 
 const app = express()
+
+app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use('/users', (req, res, next) => {
   console.log('/users')
@@ -17,7 +20,9 @@ app.use('/users', (req, res, next) => {
 })
 
 app.use('/add-user', (req, res, next) => {
-  console.log('req.body', req.body)
+  // Create user by using username from body
+  const { username } = req.body
+  console.log(`User ${username} was created successfully! 🎉`)
   res.redirect('/')
 })
 
