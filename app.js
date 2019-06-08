@@ -6,7 +6,19 @@ const app = express()
 
 app.use('/users', (req, res, next) => {
   console.log('/users')
-  res.send('<h1>You are on /users page! 😉</h1>')
+  res.send(`
+  <main>
+    <h1>You are on /users page! 😉</h1>
+    <form action="/add-user" method="POST">
+      <input type="text" name="username" />
+      <button type="submit">Add user</button>
+    </form>
+  </main>`)
+})
+
+app.use('/add-user', (req, res, next) => {
+  console.log('req.body', req.body)
+  res.redirect('/')
 })
 
 app.use('/', (req, res, next) => {
