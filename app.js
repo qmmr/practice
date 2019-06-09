@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const path = require('path')
 
+const rootDir = require('./utils/root')
 const adminRoutes = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
 
@@ -14,6 +15,7 @@ app.use('/admin', adminRoutes)
 app.use(shopRoutes)
 
 app.get('/', (req, res, next) => {
+  console.log('rootDir', rootDir)
   res.status(404).sendFile(path.join(__dirname, 'views', 'index.html'))
 })
 
