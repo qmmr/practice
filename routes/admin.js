@@ -1,18 +1,12 @@
 const express = require('express')
+const path = require('path')
 
 const router = express.Router()
 
 // GET /admin/users
 router.get('/users', (req, res, next) => {
   console.log('GET /users')
-  res.send(`
-  <main>
-    <h1>You are on /users page! 😉</h1>
-    <form action="/admin/users" method="POST">
-      <input type="text" name="username" />
-      <button type="submit">Add user</button>
-    </form>
-  </main>`)
+  res.sendFile(path.join(__dirname, '../', 'views', 'users.html'))
 })
 
 // POST /admin/users
