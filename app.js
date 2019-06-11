@@ -19,10 +19,16 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/admin', adminRoutes)
 app.use(shopRoutes)
 
+app.get('/learn-more', (req, res, next) => {
+  // console.log('rootDir', rootDir)
+  // res.sendFile(path.join(__dirname, 'views', 'index.html'))
+  res.render('learn-more', { pageTitle: 'Learn more' })
+})
+
 app.get('/', (req, res, next) => {
   // console.log('rootDir', rootDir)
   // res.sendFile(path.join(__dirname, 'views', 'index.html'))
-  res.render('index', { pageTitle: 'Home Page' })
+  res.render('index', { pageTitle: 'Home page' })
 })
 
 // Generic 404 page

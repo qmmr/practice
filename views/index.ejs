@@ -1,32 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" type="text/css" href="/css/main.css" />
-    <title><%= pageTitle %></title>
-  </head>
-
+  <%- include('partials/head.ejs', { pageTitle }) %>
   <body>
-    <header class="main-header">
-      <nav>
-        <ul>
-          <li>
-            <a href="/">Home</a>
-          </li>
-          <li>
-            <a href="/admin/users">Users</a>
-          </li>
-          <li>
-            <a href="/cart">Cart</a>
-          </li>
-        </ul>
-      </nav>
-    </header>
+    <%- include('partials/main-nav.ejs') %>
     <main>
-      <h1>Hello to my express.js app! 👋</h1>
-      <h2>Index page rendered with ejs 🎉</h2>
+      <div class="jumbotron">
+        <h1 class="display-4">Hello to my express.js app! 👋</h1>
+        <h2 class="display-5">Index page rendered with ejs 🎉</h2>
+        <p class="lead">
+          This is a simple express.js app. Built as an exercise to solidify knowledge after watching the tutorial.
+        </p>
+        <hr class="my-4" />
+        <p>It uses express.js and ejs templating engine.</p>
+        <a class="btn btn-primary btn-lg" href="/learn-more" role="button">Learn more</a>
+      </div>
     </main>
   </body>
 </html>
