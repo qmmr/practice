@@ -1,22 +1,24 @@
 const express = require('express')
-const path = require('path')
-
-const rootDir = require('../utils/root')
 
 const router = express.Router()
 
+const users = []
+
 // GET /admin/users
 router.get('/users', (req, res, next) => {
-  console.log('GET /users')
-  res.sendFile(path.join(rootDir, 'views', 'users.html'))
+  // Render users
+  res.render('users', { pageTitle: 'Admin :: Users', users })
 })
 
 // POST /admin/users
 router.post('/users', (req, res, next) => {
   // Create user by using username from body
-  const { username } = req.body
-  console.log(`User ${username} was created successfully! 🎉`)
-  res.redirect('/')
+  const user = { username: req.body.username }
+  users.push(user)
+  // TODO: Add Toast notification
+  console.log(`User ${user.username} was created successfully! 🎉`)
+
+  res.redirect('/admin/users')
 })
 
 module.exports = router

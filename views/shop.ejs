@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('partials/head.ejs', { pageTitle }) %>
+  <body>
+    <%- include('partials/main-nav.ejs') %>
+    <main>
+      <% if (items.length) { %>
+      <ul>
+        <% for (let item of items) { %>
+        <li><%= item.title %></li>
+        <% } %>
+      </ul>
+      <% } else { %>
+      <p>No items in the cart.</p>
+      <% } %>
+    </main>
+  </body>
+</html>

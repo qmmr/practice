@@ -1,8 +1,5 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const path = require('path')
-
-const rootDir = require('../utils/root')
 
 const router = express.Router()
 
@@ -11,9 +8,8 @@ router.use(bodyParser.urlencoded({ extended: true }))
 const items = []
 
 router.get('/cart', (req, res, next) => {
-  // Return items in the cart
-  // res.send({ items })
-  res.sendFile(path.join(rootDir, 'views', 'shop.html'))
+  // Render items in the cart
+  res.render('shop', { pageTitle: 'Cart items', items })
 })
 
 // POST /cart
