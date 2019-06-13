@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head.ejs', { pageTitle }) %>
+
+<body>
+  <%- include('../partials/main-nav.ejs') %>
+  <main>
+    <% if (items.length) { %>
+    <ul>
+      <% for (let item of items) { %>
+      <li><%= item.title %></li>
+      <% } %>
+    </ul>
+    <% } else { %>
+    <p>No products in your cart. Why don't have a look at <a href="/products">our products</a>?</a></p>
+    <% } %>
+  </main>
+</body>
+
+</html>

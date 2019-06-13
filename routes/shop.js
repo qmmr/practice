@@ -1,6 +1,8 @@
 const express = require('express')
 // const bodyParser = require('body-parser')
 
+const shopCtrl = require('../controllers/shop')
+
 const router = express.Router()
 
 // router.use(bodyParser.urlencoded({ extended: true }))
@@ -8,15 +10,13 @@ const router = express.Router()
 const items = []
 
 // GET / a.k.a. shop index
-router.get('/', (req, res, next) => {
-  res.render('shop/index', { pageTitle: 'Buylando' })
-})
+router.get('/', shopCtrl.index)
+
+// GET /products
+router.get('/products', shopCtrl.products)
 
 // GET /cart
-router.get('/cart', (req, res, next) => {
-  // Render items in the cart
-  res.render('shop', { pageTitle: 'Cart items', items })
-})
+router.get('/cart', shopCtrl.cart)
 
 // POST /cart
 router.post('/cart', (req, res, next) => {
