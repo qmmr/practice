@@ -25,12 +25,6 @@ app.get('/learn-more', (req, res, next) => {
   res.render('learn-more', { pageTitle: 'Learn more' })
 })
 
-app.get('/', (req, res, next) => {
-  // console.log('rootDir', rootDir)
-  // res.sendFile(path.join(__dirname, 'views', 'index.html'))
-  res.render('index', { pageTitle: 'Home page' })
-})
-
 // Generic 404 page
 app.use((req, res, next) => {
   res.status(404).sendFile(path.join(__dirname, 'views', '404.html'))
