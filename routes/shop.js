@@ -18,6 +18,9 @@ router.get('/products', shopCtrl.products)
 // GET /cart
 router.get('/cart', shopCtrl.cart)
 
+// GET /cart
+router.get('/checkout', shopCtrl.checkout)
+
 // POST /cart
 router.post('/cart', (req, res, next) => {
   // Add item to the cart

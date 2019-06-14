@@ -2,7 +2,7 @@
 <html lang="en">
 <%- include('../partials/head.ejs', { pageTitle }) %>
 <body>
-  <%- include('../partials/main-nav.ejs') %>
+  <%- include('../partials/main-nav.ejs', { uri: '/cart' }) %>
   <main>
     <% if (products.length) { %>
     <ul>
