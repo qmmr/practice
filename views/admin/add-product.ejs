@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/head.ejs', { pageTitle }) %>
+  <body>
+    <%- include('../partials/main-nav.ejs', { uri: '/admin/add-product' }) %>
+    <main>
+      <form action="/admin/products" method="POST">
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input
+            type="text"
+            name="title"
+            class="form-control"
+            id="title"
+            aria-describedby="productTitle"
+            placeholder="Enter product title"
+          />
+          <small id="productTitle" class="form-text text-muted">Enter a shor title of this product.</small>
+        </div>
+        <button type="submit" class="btn btn-primary">Add product</button>
+      </form>
+    </main>
+  </body>
+</html>

@@ -1,24 +1,16 @@
 const express = require('express')
 
+const adminCtrl = require('../controllers/admin')
+
 const router = express.Router()
 
-const users = []
+// GET /admin/products
+router.get('/products', adminCtrl.products)
 
-// GET /admin/users
-router.get('/users', (req, res, next) => {
-  // Render users
-  res.render('users', { pageTitle: 'Admin :: Users', users })
-})
+// GET /admin/add-product
+router.get('/add-product', adminCtrl.addProduct)
 
-// POST /admin/users
-router.post('/users', (req, res, next) => {
-  // Create user by using username from body
-  const user = { username: req.body.username }
-  users.push(user)
-  // TODO: Add Toast notification
-  console.log(`User ${user.username} was created successfully! 🎉`)
-
-  res.redirect('/admin/users')
-})
+// POST /admin/products
+router.post('/products', adminCtrl.createProduct)
 
 module.exports = router

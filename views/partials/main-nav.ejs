@@ -20,6 +20,12 @@
         <a class="nav-item nav-link disabled" href="/there-is-no-such-link" tabindex="-1" aria-disabled="true"
           >Disabled</a
         >
+        <a class="nav-item nav-link <%= uri === '/admin/products' ? 'active' : '' %>" href="/admin/products"
+          >Admin Products</a
+        >
+        <a class="nav-item nav-link <%= uri === '/admin/add-product' ? 'active' : '' %>" href="/admin/add-product"
+          >Admin add Product</a
+        >
       </div>
     </div>
   </nav>
