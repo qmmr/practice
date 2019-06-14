@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <%- include('../partials/head.ejs', { pageTitle }) %>
-
 <body>
   <%- include('../partials/main-nav.ejs') %>
   <main>
-    <% if (items.length) { %>
+    <% if (products.length) { %>
     <ul>
-      <% for (let item of items) { %>
-      <li><%= item.title %></li>
+      <% for (let product of products) { %>
+      <li><%= product.title %></li>
       <% } %>
     </ul>
     <% } else { %>
@@ -16,5 +15,4 @@
     <% } %>
   </main>
 </body>
-
 </html>
