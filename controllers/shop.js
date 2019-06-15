@@ -7,15 +7,18 @@ exports.index = (req, res, next) => {
 
 exports.products = async (req, res, next) => {
   // Render products available to buy
-  res.render('shop/products', { pageTitle: 'Products', uri: '/products', products: await Product.getAll() })
+  const products = await Product.getAll()
+  res.render('shop/products', { pageTitle: 'Products', uri: '/products', products })
 }
 
 exports.cart = async (req, res, next) => {
   // Render products in the cart
-  res.render('shop/cart', { pageTitle: 'Cart products', uri: '/cart', products: await Product.getAll() })
+  const products = await Product.getAll()
+  res.render('shop/cart', { pageTitle: 'Cart products', uri: '/cart', products })
 }
 
 exports.checkout = async (req, res, next) => {
   // Render checkout
-  res.render('shop/checkout', { pageTitle: 'Checkout', uri: '/checkout', products: await Product.getAll() })
+  const products = await Product.getAll()
+  res.render('shop/checkout', { pageTitle: 'Checkout', uri: '/checkout', products })
 }
