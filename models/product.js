@@ -10,38 +10,32 @@ module.exports = class Product {
 
   async save() {
     try {
-      // Check if there are products in products.json
-      const fileContent = await fs.readFile(FILE_PATH, 'utf8')
-
-      if (fileContent !== '') {
-        // Parse, add new product and save back to products.json
-        const parsedProducts = JSON.parse(fileContent)
-        parsedProducts.push(this)
-        await fs.writeFile(FILE_PATH, JSON.stringify(parsedProducts), 'utf8')
-      } else {
-        // If there were no products, save the first product
-        await fs.writeFile(FILE_PATH, JSON.stringify([ this ]), 'utf8')
-      }
+      let products = []
+      // Get products from products.json
+      const fileContents = await fs.readFile(FILE_PATH, 'utf8')
+      products = JSON.parse(fileContents)
+      // Add the new product
+      products.push(this)
+      // Save the file
+      await fs.writeFile(FILE_PATH, JSON.stringify(products), 'utf8')
     } catch (err) {
       console.error(err)
     }
+
+    // TODO: Check if this is needed?
+    return this
   }
 
   static async getAll() {
     try {
       // Read content of products.json
-      const fileContent = await fs.readFile(FILE_PATH, 'utf8')
+      const fileContents = await fs.readFile(FILE_PATH, 'utf8')
 
-      // Check if there are products saved in products.json
-      if (fileContent !== '') {
-        return JSON.parse(fileContent)
-      }
-
-      // Otherwise return empty array
-      return []
+      return JSON.parse(fileContents)
     } catch (err) {
-      // If file does not exist throw error
-      throw err
+      console.error(err)
+      // In case of an error, at least return empty array
+      return []
     }
   }
 }

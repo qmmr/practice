@@ -3,7 +3,6 @@ const Product = require('../models/product')
 // GET
 exports.products = async (req, res, next) => {
   // Render admin products
-  console.log('products: ', await Product.getAll())
   res.render('admin/products', {
     pageTitle: 'Admin :: Products',
     uri: '/admin/products',
@@ -21,7 +20,7 @@ exports.createProduct = async (req, res, next) => {
   // Create product from POST request
   const product = new Product({ title: req.body.title })
   await product.save()
-  console.log('Saving product...')
+
   // TODO: Add Toast notification
   console.log('Product was created successfully! 🎉')
   res.redirect('/admin/products')
