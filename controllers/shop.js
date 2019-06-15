@@ -5,17 +5,17 @@ exports.index = (req, res, next) => {
   res.render('shop/index', { pageTitle: 'Buylando', uri: '/' })
 }
 
-exports.products = (req, res, next) => {
+exports.products = async (req, res, next) => {
   // Render products available to buy
-  res.render('shop/products', { pageTitle: 'Products', uri: '/products', products: Product.getAll() })
+  res.render('shop/products', { pageTitle: 'Products', uri: '/products', products: await Product.getAll() })
 }
 
-exports.cart = (req, res, next) => {
+exports.cart = async (req, res, next) => {
   // Render products in the cart
-  res.render('shop/cart', { pageTitle: 'Cart products', uri: '/cart', products: Product.getAll() })
+  res.render('shop/cart', { pageTitle: 'Cart products', uri: '/cart', products: await Product.getAll() })
 }
 
-exports.checkout = (req, res, next) => {
+exports.checkout = async (req, res, next) => {
   // Render checkout
-  res.render('shop/checkout', { pageTitle: 'Checkout', uri: '/checkout', products: Product.getAll() })
+  res.render('shop/checkout', { pageTitle: 'Checkout', uri: '/checkout', products: await Product.getAll() })
 }

@@ -1,10 +1,14 @@
 const Product = require('../models/product')
 
 // GET
-exports.products = (req, res, next) => {
+exports.products = async (req, res, next) => {
   // Render admin products
-  console.log('products: ', Product.getAll())
-  res.render('admin/products', { pageTitle: 'Admin :: Products', uri: '/admin/products', products: Product.getAll() })
+  console.log('products: ', await Product.getAll())
+  res.render('admin/products', {
+    pageTitle: 'Admin :: Products',
+    uri: '/admin/products',
+    products: await Product.getAll()
+  })
 }
 
 exports.addProduct = (req, res, next) => {
@@ -13,10 +17,10 @@ exports.addProduct = (req, res, next) => {
 }
 
 // POST
-exports.createProduct = (req, res, next) => {
+exports.createProduct = async (req, res, next) => {
   // Create product from POST request
   const product = new Product({ title: req.body.title })
-  product.save()
+  await product.save()
   console.log('Saving product...')
   // TODO: Add Toast notification
   console.log('Product was created successfully! 🎉')
