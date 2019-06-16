@@ -17,6 +17,32 @@
           />
           <small id="productTitle" class="form-text text-muted">Enter a shor title of this product.</small>
         </div>
+        <div class="form-group">
+          <label for="imageUrl">Image URL</label>
+          <input
+            type="text"
+            name="imageUrl"
+            class="form-control"
+            id="imageUrl"
+            aria-describedby="productImage"
+            placeholder="Enter product image URL"
+          />
+        </div>
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input
+            type="number"
+            step="0.01"
+            name="price"
+            class="form-control"
+            id="price"
+            aria-describedby="productPrice"
+          />
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+        </div>
         <button type="submit" class="btn btn-primary">Add product</button>
       </form>
     </main>

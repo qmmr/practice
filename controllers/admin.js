@@ -18,7 +18,8 @@ exports.addProduct = (req, res, next) => {
 // POST
 exports.createProduct = async (req, res, next) => {
   // Create product from POST request
-  const product = new Product({ title: req.body.title })
+  const { title, description, imageUrl, price } = req.body
+  const product = new Product({ title, description, imageUrl, price })
   await product.save()
 
   // TODO: Add Toast notification
