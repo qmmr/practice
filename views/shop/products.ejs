@@ -4,15 +4,23 @@
   <body>
     <%- include('../partials/main-nav.ejs', { uri: '/products' }) %>
     <main>
-      <% if (products.length) { %>
-      <ul>
-        <% for (let product of products) { %>
-        <li><%= product.title %></li>
+      <div class="row">
+        <% if (products.length) { %> <% for (let product of products) { %>
+        <div class="col-sm-6">
+          <div class="card" style="width: 18rem;">
+            <img src="<%= product.imageUrl %>" class="card-img-top" alt="..." />
+            <div class="card-body">
+              <h5 class="card-title"><%= product.title %></h5>
+              <p class="card-text"><%= product.price %></p>
+              <p class="card-text"><%= product.description %></p>
+              <a href="#" class="btn btn-primary">Add to cart</a>
+            </div>
+          </div>
+        </div>
+        <% } %> <% } else { %>
+        <p>No products found. Why don't you create some? 🤔</p>
         <% } %>
-      </ul>
-      <% } else { %>
-      <p>No products found. Why don't you create some? 🤔</p>
-      <% } %>
+      </div>
     </main>
   </body>
 </html>
