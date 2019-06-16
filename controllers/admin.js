@@ -1,6 +1,6 @@
 const Product = require('../models/product')
 
-// GET
+/** GET requests */
 exports.products = async (req, res, next) => {
   // Render admin products
   res.render('admin/products', {
@@ -15,7 +15,7 @@ exports.addProduct = (req, res, next) => {
   res.render('admin/add-product', { pageTitle: 'Admin :: Add Product', uri: '/admin/add-product' })
 }
 
-// POST
+/** POST requests */
 exports.createProduct = async (req, res, next) => {
   // Create product from POST request
   const { title, description, imageUrl, price } = req.body

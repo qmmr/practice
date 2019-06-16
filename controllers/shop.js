@@ -1,5 +1,6 @@
 const Product = require('../models/product')
 
+/** GET requests */
 exports.index = (req, res, next) => {
   // Render index page of the shop
   res.render('shop/index', { pageTitle: 'Buylando', uri: '/' })
@@ -21,4 +22,11 @@ exports.checkout = async (req, res, next) => {
   // Render checkout
   const products = await Product.getAll()
   res.render('shop/checkout', { pageTitle: 'Checkout', uri: '/checkout', products })
+}
+
+/** POST requests */
+exports.addToCart = (req, res, next) => {
+  // Add item to the cart
+  // TODO: To be implemented
+  res.status(200).send({})
 }
