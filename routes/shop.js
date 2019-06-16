@@ -14,6 +14,9 @@ router.get('/products', shopCtrl.products)
 router.get('/cart', shopCtrl.cart)
 
 // GET /cart
+router.get('/orders', shopCtrl.orders)
+
+// GET /cart
 router.get('/checkout', shopCtrl.checkout)
 
 // POST /cart

@@ -18,6 +18,12 @@ exports.cart = async (req, res, next) => {
   res.render('shop/cart', { pageTitle: 'Cart products', uri: '/cart', products })
 }
 
+exports.orders = async (req, res, next) => {
+  // Render orders
+  const products = await Product.getAll()
+  res.render('shop/orders', { pageTitle: 'Your orders', uri: '/orders', products })
+}
+
 exports.checkout = async (req, res, next) => {
   // Render checkout
   const products = await Product.getAll()
