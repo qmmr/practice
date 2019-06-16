@@ -12,6 +12,13 @@ exports.products = async (req, res, next) => {
   res.render('shop/products', { pageTitle: 'Products', uri: '/products', products })
 }
 
+exports.productById = async (req, res, next) => {
+  const id = req.params.id
+  const product = await Product.findById(id)
+  console.log('found product: ', product)
+  res.render('shop/product-details', { pageTitle: 'Product details', uri: '/product-details', product })
+}
+
 exports.cart = async (req, res, next) => {
   // Render products in the cart
   const products = await Product.getAll()

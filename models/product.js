@@ -44,4 +44,11 @@ module.exports = class Product {
       return []
     }
   }
+
+  static async findById(id) {
+    const products = await this.getAll()
+    const product = products.find(product => product.id === id)
+
+    return product
+  }
 }

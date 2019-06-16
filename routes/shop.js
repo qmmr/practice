@@ -10,6 +10,9 @@ router.get('/', shopCtrl.index)
 // GET /products
 router.get('/products', shopCtrl.products)
 
+// GET /products/:id
+router.get('/products/:id', shopCtrl.productById)
+
 // GET /cart
 router.get('/cart', shopCtrl.cart)
 
