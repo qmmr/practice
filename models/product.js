@@ -1,6 +1,7 @@
 const fs = require('fs').promises
 const path = require('path')
 
+const intersectionBy = require('lodash/intersectionBy')
 const uuidV4 = require('uuid/v4')
 
 const FILE_PATH = path.join(path.dirname(process.mainModule.filename), 'data', 'products.json')
@@ -50,5 +51,11 @@ module.exports = class Product {
     const product = products.find(product => product.id === id)
 
     return product
+  }
+
+  static async findByIDs(ids) {
+    const products = await this.getAll()
+
+    return intersectionBy(products, ids, 'id')
   }
 }
