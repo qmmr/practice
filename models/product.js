@@ -58,4 +58,18 @@ module.exports = class Product {
 
     return intersectionBy(products, ids, 'id')
   }
+
+  static async delete(id) {
+    const products = await this.getAll()
+    const updatedProducts = products.filter(product => product.id !== id)
+    try {
+      // Save the file
+      await fs.writeFile(FILE_PATH, JSON.stringify(updatedProducts), 'utf8')
+
+      return true
+    } catch (err) {
+      console.error(err)
+      return err
+    }
+  }
 }

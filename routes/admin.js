@@ -13,4 +13,7 @@ router.get('/add-product', adminCtrl.addProduct)
 // POST /admin/products
 router.post('/products', adminCtrl.createProduct)
 
+// FIXME: Should be DELETE request
+router.post('/product/delete/:id', adminCtrl.deleteProduct)
+
 module.exports = router

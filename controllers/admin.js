@@ -26,3 +26,9 @@ exports.createProduct = async (req, res, next) => {
   console.log('Product was created successfully! 🎉')
   res.redirect('/admin/products')
 }
+
+exports.deleteProduct = async (req, res, next) => {
+  await Product.delete(req.params.id)
+
+  res.redirect('/admin/products')
+}
