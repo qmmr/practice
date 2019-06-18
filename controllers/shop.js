@@ -1,4 +1,5 @@
 const Product = require('../models/product')
+const Cart = require('../models/cart')
 
 /** GET requests */
 exports.index = (req, res, next) => {
@@ -16,12 +17,13 @@ exports.productById = async (req, res, next) => {
   const id = req.params.id
   const product = await Product.findById(id)
   console.log('found product: ', product)
-  res.render('shop/product-details', { pageTitle: 'Product details', uri: '/product-details', product })
+  res.render('shop/product-details', { pageTitle: 'Product details', uri: '/products', product })
 }
 
 exports.cart = async (req, res, next) => {
   // Render products in the cart
-  const products = await Product.getAll()
+  const cartProductsIDs = await Cart.getProducts()
+  const products = await Product.findByIDs(cartProductsIDs)
   res.render('shop/cart', { pageTitle: 'Cart products', uri: '/cart', products })
 }
 
@@ -40,6 +42,10 @@ exports.checkout = async (req, res, next) => {
 /** POST requests */
 exports.addToCart = (req, res, next) => {
   // Add item to the cart
-  // TODO: To be implemented
-  res.status(200).send({})
+  const id = req.body.id
+  Cart.add(id)
+  // const product = Product.findById(id)
+  // TODO: What to return?
+  // TODO: How to deal with errors?
+  res.redirect('/cart')
 }
