@@ -4,14 +4,24 @@
 <body>
   <%- include('../partials/main-nav.ejs', { uri: '/cart' }) %>
   <main>
+  <div class="row">
     <% if (products.length) { %>
-    <ul>
-      <% for (let product of products) { %>
-      <li><%= product.title %></li>
+       <% for (let product of products) { %>
+        <div class="col-sm-6">
+          <div class="card" style="width: 18rem;">
+            <img src="<%= product.imageUrl %>" class="card-img-top" alt="..." />
+            <div class="card-body">
+              <h5 class="card-title"><%= product.title %></h5>
+              <p class="card-text"><%= product.price %></p>
+              <p class="card-text"><%= product.description %></p>
+              <input type="number" step="1" name="quantity" value="<%= quantity %>" />
+              <%- include('../partials/add-to-cart-btn.ejs', { product }) %>
+            </div>
+          </div>
+        </div>
       <% } %>
-    </ul>
     <% } else { %>
-    <p>No products in your cart. Why don't have a look at <a href="/products">our products</a>?</a></p>
+      <p>No products in your cart. Why don't have a look at <a href="/products">our products</a>?</a></p>
     <% } %>
   </main>
 </body>

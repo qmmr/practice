@@ -59,6 +59,28 @@ module.exports = class Product {
     return intersectionBy(products, ids, 'id')
   }
 
+  static async edit(id, values) {
+    const products = await this.getAll()
+    const productIndex = products.findIndex(product => product.id === id)
+    console.log(`products: ${products}`)
+
+    // If we found product to edit
+    if (productIndex !== -1) {
+      console.log(`productIndex: ${productIndex}`)
+      try {
+        // Save the file with updated products
+        await fs.writeFile(FILE_PATH, JSON.stringify(products), 'utf8')
+
+        return true
+      } catch (err) {
+        console.error(err)
+        return err
+      }
+    } else {
+      console.error(`Could not find the product with id: ${id}`)
+    }
+  }
+
   static async delete(id) {
     const products = await this.getAll()
     const updatedProducts = products.filter(product => product.id !== id)

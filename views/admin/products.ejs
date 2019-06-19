@@ -3,17 +3,17 @@
   <%- include('../partials/head.ejs', { pageTitle }) %>
   <body>
     <%- include('../partials/main-nav.ejs', { uri: '/admin/products' }) %>
-    <main>
-      <div class="row">
+    <main class="container">
+      <div class="row justify-content-start align-items-start">
         <% if (products.length) { %> <% for (let product of products) { %>
-        <div class="col-sm-6">
-          <div class="card" style="width: 18rem;">
+        <div class="col">
+          <div class="card">
             <img src="<%= product.imageUrl %>" class="card-img-top" alt="..." />
             <div class="card-body">
               <h5 class="card-title"><%= product.title %></h5>
               <p class="card-text"><%= product.price %></p>
               <p class="card-text"><%= product.description %></p>
-              <a href="#" class="btn btn-primary">Edit</a>
+              <a href="/admin/edit-product/<%= product.id %>" class="btn btn-primary">Edit</a>
               <form method="POST" action="/admin/product/delete/<%= product.id %>">
                 <button type="submit" class="btn btn-danger">Delete</button>
               </form>
