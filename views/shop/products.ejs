@@ -3,18 +3,20 @@
   <%- include('../partials/head.ejs', { pageTitle }) %>
   <body>
     <%- include('../partials/main-nav.ejs', { uri: '/products' }) %>
-    <main>
-      <div class="row">
+    <main class="container">
+      <div class="row justify-content-start align-items-start">
         <% if (products.length) { %> <% for (let product of products) { %>
-        <div class="col-sm-6">
-          <div class="card" style="width: 18rem;">
+        <div class="col">
+          <div class="card">
             <img src="<%= product.imageUrl %>" class="card-img-top" alt="..." />
             <div class="card-body">
               <h5 class="card-title"><%= product.title %></h5>
               <p class="card-text"><%= product.price %></p>
               <p class="card-text"><%= product.description %></p>
-              <a href="/products/<%= product.id %>" class="btn btn-primary">Product info</a>
-              <%- include('../partials/add-to-cart-btn.ejs', { product }) %>
+              <div class="d-flex flex-column justify-content-between align-items-stretch" style="min-height: 5rem;">
+                <a href="/products/<%= product.id %>" class="btn btn-primary">Product info</a>
+                <%- include('../partials/add-to-cart-btn.ejs', { product }) %>
+              </div>
             </div>
           </div>
         </div>
