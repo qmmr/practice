@@ -5,15 +5,14 @@
     <%- include('../partials/main-nav.ejs') %>
     <main>
       <div class="row">
-        <div class="col-sm-6">
-          <div class="card" style="width: 18rem;">
-            <img src="<%= product.imageUrl %>" class="card-img-top" alt="..." />
-            <div class="card-body">
-              <h5 class="card-title"><%= product.title %></h5>
-              <p class="card-text"><%= product.price %></p>
-              <p class="card-text"><%= product.description %></p>
-              <%- include('../partials/add-to-cart-btn.ejs', { product }) %>
-            </div>
+        <div class="col">
+          <div class="jumbotron">
+            <h1 class="display-5"><%= product.title %></h1>
+            <p class="lead"><%= product.description %></p>
+            <hr class="my-4" />
+            <img src="<%= product.imageUrl %>" class="card-img-top" class="image-fluid" alt="Image of <%= product.title %>" />
+            <h3 class="text-right pt-3 pb-3">Cena: <%= product.price %> zł</h3>
+            <%- include('../partials/add-to-cart-btn.ejs', { product }) %>
           </div>
         </div>
     </main>
