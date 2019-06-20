@@ -59,14 +59,15 @@ module.exports = class Product {
     return intersectionBy(products, ids, 'id')
   }
 
-  static async edit(id, values) {
+  static async update(id, values) {
     const products = await this.getAll()
-    const productIndex = products.findIndex(product => product.id === id)
-    console.log(`products: ${products}`)
+    const idx = products.findIndex(product => product.id === id)
 
     // If we found product to edit
-    if (productIndex !== -1) {
-      console.log(`productIndex: ${productIndex}`)
+    if (idx !== -1) {
+      // Update all the values of found product
+      products[idx] = { ...products[idx], ...values }
+
       try {
         // Save the file with updated products
         await fs.writeFile(FILE_PATH, JSON.stringify(products), 'utf8')

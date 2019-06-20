@@ -10,13 +10,13 @@ exports.products = async (req, res, next) => {
   })
 }
 
+// Render admin/add-product template
 exports.addProduct = (req, res, next) => {
-  // Render admin add-product
   res.render('admin/add-product', { pageTitle: 'Admin :: Add Product', uri: '/admin/add-product' })
 }
 
+// Render admin/edit-product template
 exports.editProduct = async (req, res, next) => {
-  // Render admin edit-product
   const product = await Product.findById(req.params.id)
 
   res.render('admin/edit-product', { pageTitle: 'Admin :: Edit Product', uri: '/admin/edit-product', product })
@@ -36,10 +36,7 @@ exports.createProduct = async (req, res, next) => {
 
 // FIXME: This should be sent as PUT or PATCH request by JavaScript!!!
 exports.updateProduct = async (req, res, next) => {
-  console.log('TODO: update and save product...')
-  console.log('req.params.id: ', req.params.id)
-  console.log('req.body: ', req.body)
-  // await Product.edit(req.params.id)
+  await Product.update(req.params.id, req.body)
 
   res.redirect('/admin/products')
 }

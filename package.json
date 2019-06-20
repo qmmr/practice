@@ -10,8 +10,7 @@
   "nodemonConfig": {
     "ignore": [
       "data/*"
-    ],
-    "delay": "2500"
+    ]
   },
   "author": "Marcin Kumorek",
   "license": "ISC",
