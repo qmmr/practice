@@ -49,4 +49,20 @@ module.exports = class Cart {
       // TODO: How to report error with problems when reading from file? 🤔
     }
   }
+
+  static async remove(id) {
+    const products = await this.getProducts()
+    console.log('products in the cart: ', products)
+
+    try {
+      const updatedProducts = products.filter(p => p.id !== id)
+      console.log('updatedProducts: ', updatedProducts)
+      await fs.writeFile(FILE_PATH, JSON.stringify(updatedProducts), 'utf-8')
+
+      return true
+    } catch (err) {
+      console.error(err)
+      return false
+    }
+  }
 }

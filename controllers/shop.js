@@ -47,10 +47,20 @@ exports.checkout = async (req, res, next) => {
 
 /** POST requests */
 exports.addToCart = (req, res, next) => {
-  // Add item to the cart
+  // Add product to the cart
   const id = req.body.id
   Cart.add(id)
-  // const product = Product.findById(id)
+
+  // TODO: What to return?
+  // TODO: How to deal with errors?
+  res.redirect('/cart')
+}
+
+exports.removeFromCart = (req, res, next) => {
+  // Remove product from the cart
+  const id = req.body.id
+  Cart.remove(id)
+
   // TODO: What to return?
   // TODO: How to deal with errors?
   res.redirect('/cart')

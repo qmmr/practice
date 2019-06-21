@@ -25,4 +25,7 @@ router.get('/checkout', shopCtrl.checkout)
 // POST /cart
 router.post('/cart', shopCtrl.addToCart)
 
+// FIXME: That should be FE DELETE action...k
+router.post('/cart/remove', shopCtrl.removeFromCart)
+
 module.exports = router
