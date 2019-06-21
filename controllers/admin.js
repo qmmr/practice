@@ -30,7 +30,6 @@ exports.createProduct = async (req, res, next) => {
   await product.save()
 
   // TODO: Add Toast notification
-  console.log('Product was created successfully! 🎉')
   res.redirect('/admin/products')
 }
 

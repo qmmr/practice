@@ -12,7 +12,6 @@ module.exports = class Cart {
     try {
       const fileContent = await fs.readFile(FILE_PATH, 'utf-8')
       products = JSON.parse(fileContent)
-      console.log('products: ', products)
 
       // Check if product with this id is already in products array
       let foundIndex = products.findIndex(product => product.id === id)
@@ -26,8 +25,6 @@ module.exports = class Cart {
 
       // Save the cart to cart.json
       try {
-        console.log('saving file...')
-        console.log(JSON.stringify(products))
         await fs.writeFile(FILE_PATH, JSON.stringify(products), 'utf-8')
       } catch (err) {
         console.error(err)
@@ -45,7 +42,6 @@ module.exports = class Cart {
     try {
       const fileContent = await fs.readFile(FILE_PATH, 'utf-8')
       products = JSON.parse(fileContent)
-      console.log('getProducts: ', products)
 
       return products
     } catch (err) {
