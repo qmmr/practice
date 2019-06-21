@@ -83,6 +83,7 @@ module.exports = class Product {
   }
 
   static async delete(id) {
+    // FIXME: Remove product from the cart
     const products = await this.getAll()
     const updatedProducts = products.filter(product => product.id !== id)
     try {
