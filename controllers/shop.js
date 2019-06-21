@@ -22,9 +22,15 @@ exports.productById = async (req, res, next) => {
 
 exports.cart = async (req, res, next) => {
   // Render products in the cart
-  const cartProductsIDs = await Cart.getProducts()
-  const products = await Product.findByIDs(cartProductsIDs)
-  res.render('shop/cart', { pageTitle: 'Cart products', uri: '/cart', products })
+  const cartProducts = await Cart.getProducts()
+  const products = await Product.findByIDs(cartProducts)
+  // In order to show quantity, we need to add cartProducts quantity to product object
+  const combinedProducts = products.map(product => {
+    const { quantity } = cartProducts.find(cProduct => cProduct.id === product.id)
+    return { ...product, quantity }
+  })
+
+  res.render('shop/cart', { pageTitle: 'Cart products', uri: '/cart', products: combinedProducts })
 }
 
 exports.orders = async (req, res, next) => {

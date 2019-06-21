@@ -23,7 +23,6 @@ router.get('/orders', shopCtrl.orders)
 router.get('/checkout', shopCtrl.checkout)
 
 // POST /cart
-// TODO: Not implemented yet
 router.post('/cart', shopCtrl.addToCart)
 
 module.exports = router

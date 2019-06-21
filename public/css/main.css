@@ -27,3 +27,13 @@ body {
 main {
     margin: 1rem;
 }
+
+/** cart.ejs */
+.quantity-group {
+}
+.quantity-group input {
+    font-size: 1.1rem;
+    font-weight: 400;
+    text-align: center;
+    width: 5rem;
+}
