@@ -1,64 +1,34 @@
-const http = require('http')
+const express = require('express')
+const bodyParser = require('body-parser')
+const path = require('path')
 
-const server = http.createServer((req, res) => {
-  const method = req.method
-  const url = req.url
+// const rootDir = require('./utils/root')
+const adminRoutes = require('./routes/admin')
+const shopRoutes = require('./routes/shop')
 
-  if (url === '/' && method === 'GET') {
-    // handle requests to http://localhost:3000
-    res.setHeader('Content-Type', 'text/html')
-    res.write(`<html>
-		<head>
-		<title>Learning node.js</title>
-		</head>
-		<body>
-		  <h1>Welcome to node.js learning experience!</h1>
-		  <form method="POST" action="/create-user">
-		    <input type="text" name="user" />
-		    <button type="submit">Create user</button>
-		  </form>
-		</body>
-    </html>
-`)
-    return res.end()
-  }
+const PORT = process.env.PORT || 3000
 
-  if (url === '/users' && method === 'GET') {
-    res.setHeader('Content-Type', 'text/html')
-    res.write(`<html>
-	  	<head>
-        <title>Learning node.js</title>
-      </head>
-      <body>
-        <ul>
-          <li>User 1</li>
-          <li>User 2</li>
-          <li>User 3</li>
-        </ul>
-		  </body>
-		</html>`)
-    return res.end()
-  }
+const app = express()
 
-  if (url === '/create-user' && method === 'POST') {
-    // create user and redirect to "home"
-    const content = []
+app.set('view engine', 'ejs')
+app.set('views', 'views')
 
-    req.on('data', chunk => {
-      content.push(chunk)
-    })
+app.use(express.static(path.join(__dirname, 'public')))
 
-    req.on('end', () => {
-      const parsedBody = Buffer.concat(content).toString()
-      const [ , username ] = parsedBody.split('=')
-      console.log('username: ', username, ' have been created!')
-      res.statusCode = 302
-      res.setHeader('Location', '/')
-      return res.end()
-    })
-  }
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use('/admin', adminRoutes)
+app.use(shopRoutes)
+
+app.get('/learn-more', (req, res, next) => {
+  // res.sendFile(path.join(__dirname, 'views', 'index.html'))
+  res.render('learn-more', { pageTitle: 'Learn more' })
 })
 
-server.listen(3000, () => {
-  console.log('server is listening on port 3000...')
+// Generic 404 page
+app.use((req, res, next) => {
+  res.status(404).sendFile(path.join(__dirname, 'views', '404.html'))
+})
+
+app.listen(PORT, () => {
+  console.log(`server is listening on port ${PORT}...`)
 })

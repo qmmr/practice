@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/head.ejs', { pageTitle }) %>
+  <body>
+    <%- include('../partials/main-nav.ejs', { uri: '/admin/products' }) %>
+    <main class="container">
+      <div class="row justify-content-start align-items-start">
+        <% if (products.length) { %> <% for (let product of products) { %>
+        <div class="col">
+          <div class="card">
+            <img src="<%= product.imageUrl %>" class="card-img-top" alt="..." />
+            <div class="card-body">
+              <h5 class="card-title"><%= product.title %></h5>
+              <p class="card-text"><%= product.price %> zł</p>
+              <p class="card-text"><%= product.description %></p>
+              <div class="d-flex flex-row justify-content-between">
+                <a href="/admin/edit-product/<%= product.id %>" class="btn btn-primary">Edit</a>
+                <form method="POST" action="/admin/product/delete/<%= product.id %>">
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %> <% } else { %>
+        <p>No products found. Why don't you create some? 🤔</p>
+        <% } %>
+      </div>
+    </main>
+  </body>
+</html>

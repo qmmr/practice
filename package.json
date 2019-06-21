@@ -7,9 +7,22 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js"
   },
+  "nodemonConfig": {
+    "ignore": [
+      "data/*"
+    ]
+  },
   "author": "Marcin Kumorek",
   "license": "ISC",
   "devDependencies": {
     "nodemon": "1.19.1"
+  },
+  "dependencies": {
+    "body-parser": "1.19.0",
+    "ejs": "2.6.1",
+    "express": "4.17.1",
+    "lodash": "4.17.11",
+    "pug": "2.0.3",
+    "uuid": "3.3.2"
   }
 }

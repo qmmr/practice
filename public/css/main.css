@@ -1,0 +1,39 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.main-header {
+    display: flex;
+}
+
+.main-header nav {
+    display: flex;
+    width: 100%;
+}
+
+.main-header nav ul {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0 0 0 1rem;
+    width: 100%;
+}
+
+.main-header nav ul li {
+    list-style: none;
+    margin-right: 1rem;
+}
+
+main {
+    margin: 1rem;
+}
+
+/** cart.ejs */
+.quantity-group {
+}
+.quantity-group input {
+    font-size: 1.1rem;
+    font-weight: 400;
+    text-align: center;
+    width: 5rem;
+}
