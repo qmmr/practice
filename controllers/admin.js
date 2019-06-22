@@ -27,7 +27,8 @@ exports.createProduct = async (req, res, next) => {
   // Create product from POST request
   const { title, description, imageUrl, price } = req.body
   const product = new Product({ title, description, imageUrl, price })
-  await product.save()
+  const savedProduct = await product.save()
+  console.log('savedProduct: ', savedProduct)
 
   // TODO: Add Toast notification
   res.redirect('/admin/products')

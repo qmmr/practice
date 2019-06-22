@@ -18,20 +18,15 @@ module.exports = class Product {
 
   async save() {
     try {
-      let products = []
-      // Get products from products.json
-      const fileContents = await fs.readFile(FILE_PATH, 'utf8')
-      products = JSON.parse(fileContents)
-      // Add the new product
-      products.push(this)
-      // Save the file
-      await fs.writeFile(FILE_PATH, JSON.stringify(products), 'utf8')
+      const queryObject = {
+        text: 'INSERT INTO products(title, description, image_url, price) VALUES($1, $2, $3, $4) RETURNING *',
+        values: [this.title, this.description, this.imageUrl, this.price],
+      }
+
+      return await query(queryObject)
     } catch (err) {
       console.error(err)
     }
-
-    // TODO: Check if this is needed?
-    return this
   }
 
   static async getAll() {
