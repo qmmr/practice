@@ -1,5 +1,6 @@
 const fs = require('fs').promises
 const path = require('path')
+const db = require('../utils/database')
 
 const intersectionBy = require('lodash/intersectionBy')
 const uuidV4 = require('uuid/v4')
@@ -35,10 +36,9 @@ module.exports = class Product {
 
   static async getAll() {
     try {
-      // Read content of products.json
-      const fileContents = await fs.readFile(FILE_PATH, 'utf8')
+      const { rows } = await db.query('SELECT * FROM products')
 
-      return JSON.parse(fileContents)
+      return rows
     } catch (err) {
       console.error(err)
       // In case of an error, at least return empty array

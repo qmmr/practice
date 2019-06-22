@@ -8,4 +8,5 @@
 
 ### Using Postgres:
 
--   Adds npm module pg to connect with Postgress database
+-   uses npm module `pg` to connect with Postgress database
+-   uses envirnoment variables to hold the connection information: `PGUSER`, `PGHOST`, `PGDATABASE`, `PGPORT`
