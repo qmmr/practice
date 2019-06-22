@@ -10,7 +10,7 @@
             <h1 class="display-5"><%= product.title %></h1>
             <p class="lead"><%= product.description %></p>
             <hr class="my-4" />
-            <img src="<%= product.imageUrl %>" class="card-img-top" class="image-fluid" alt="Image of <%= product.title %>" />
+            <img src="<%= product.image_url %>" class="card-img-top" class="image-fluid" alt="Image of <%= product.title %>" />
             <h3 class="text-right pt-3 pb-3">Cena: <%= product.price %> zł</h3>
             <%- include('../partials/add-to-cart-btn.ejs', { product }) %>
           </div>

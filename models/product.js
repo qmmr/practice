@@ -1,6 +1,6 @@
 const fs = require('fs').promises
 const path = require('path')
-const db = require('../utils/database')
+const { query } = require('../utils/db')
 
 const intersectionBy = require('lodash/intersectionBy')
 const uuidV4 = require('uuid/v4')
@@ -36,7 +36,7 @@ module.exports = class Product {
 
   static async getAll() {
     try {
-      const { rows } = await db.query('SELECT * FROM products')
+      const { rows } = await query('SELECT * FROM products')
 
       return rows
     } catch (err) {
@@ -47,10 +47,19 @@ module.exports = class Product {
   }
 
   static async findById(id) {
-    const products = await this.getAll()
-    const product = products.find(product => product.id === id)
+    try {
+      const queryObject = {
+        text: 'SELECT * FROM products WHERE id=$1',
+        values: [id],
+      }
 
-    return product
+      const { rows } = await query(queryObject)
+      const product = rows[0]
+
+      return product
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   static async findByIDs(ids) {
