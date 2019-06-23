@@ -1,15 +1,9 @@
-const fs = require('fs').promises
-const path = require('path')
 const { query } = require('../utils/db')
 
 const intersectionBy = require('lodash/intersectionBy')
-const uuidV4 = require('uuid/v4')
-
-const FILE_PATH = path.join(path.dirname(process.mainModule.filename), 'data', 'products.json')
 
 module.exports = class Product {
   constructor({ title, description, imageUrl, price }) {
-    this.product_id = uuidV4()
     this.title = title
     this.description = description
     this.imageUrl = imageUrl
