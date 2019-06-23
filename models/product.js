@@ -9,7 +9,7 @@ const FILE_PATH = path.join(path.dirname(process.mainModule.filename), 'data', '
 
 module.exports = class Product {
   constructor({ title, description, imageUrl, price }) {
-    this.id = uuidV4()
+    this.product_id = uuidV4()
     this.title = title
     this.description = description
     this.imageUrl = imageUrl
@@ -44,7 +44,7 @@ module.exports = class Product {
   static async findById(id) {
     try {
       const queryObject = {
-        text: 'SELECT * FROM products WHERE id=$1',
+        text: 'SELECT * FROM products WHERE product_id = $1',
         values: [id],
       }
 
@@ -63,6 +63,7 @@ module.exports = class Product {
     return intersectionBy(products, ids, 'id')
   }
 
+  // TODO: Replace with update values in the DB
   static async update(id, values) {
     const products = await this.getAll()
     const idx = products.findIndex(product => product.id === id)
@@ -87,13 +88,11 @@ module.exports = class Product {
   }
 
   static async delete(id) {
-    const products = await this.getAll()
-    const updatedProducts = products.filter(product => product.id !== id)
     try {
-      // Save the file
-      await fs.writeFile(FILE_PATH, JSON.stringify(updatedProducts), 'utf8')
-
-      return true
+      return await query({
+        text: `DELETE FROM products WHERE product_id = $1`,
+        values: [id],
+      })
     } catch (err) {
       console.error(err)
       return err

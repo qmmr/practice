@@ -28,7 +28,7 @@ exports.createProduct = async (req, res, next) => {
   const { title, description, imageUrl, price } = req.body
   const product = new Product({ title, description, imageUrl, price })
   const savedProduct = await product.save()
-  console.log('savedProduct: ', savedProduct)
+  console.log('savedProduct: ', savedProduct.rows[0])
 
   // TODO: Add Toast notification
   res.redirect('/admin/products')
