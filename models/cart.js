@@ -45,7 +45,7 @@ module.exports = class Cart {
 
       return products
     } catch (err) {
-      console.log(err)
+      console.error(err)
       // TODO: How to report error with problems when reading from file? 🤔
     }
   }

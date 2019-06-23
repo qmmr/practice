@@ -4,7 +4,7 @@
   <body>
     <%- include('../partials/main-nav.ejs', { uri: '/admin/add-product' }) %>
     <main>
-      <form action="/admin/products/update/<%= product.id %>" method="POST">
+      <form action="/admin/products/update/<%= product.product_id %>" method="POST">
         <div class="form-group">
           <label for="title">Title</label>
           <input
@@ -19,15 +19,15 @@
           <small id="productTitle" class="form-text text-muted">Enter a shor title of this product.</small>
         </div>
         <div class="form-group">
-          <label for="imageUrl">Image URL</label>
+          <label for="image-url">Image URL</label>
           <input
             type="text"
-            name="imageUrl"
+            name="image_url"
             class="form-control"
-            id="imageUrl"
+            id="image-url"
             aria-describedby="productImage"
             placeholder="Enter product image URL"
-            value="<%= product.imageUrl %>"
+            value="<%= product.image_url %>"
           />
         </div>
         <div class="form-group">

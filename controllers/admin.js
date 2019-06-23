@@ -28,15 +28,14 @@ exports.createProduct = async (req, res, next) => {
   const { title, description, imageUrl, price } = req.body
   const product = new Product({ title, description, imageUrl, price })
   const savedProduct = await product.save()
-  console.log('savedProduct: ', savedProduct.rows[0])
 
   // TODO: Add Toast notification
   res.redirect('/admin/products')
 }
 
 // FIXME: This should be sent as PUT or PATCH request by JavaScript!!!
-exports.updateProduct = async (req, res, next) => {
-  await Product.update(req.params.id, req.body)
+exports.updateProduct = async ({ params, body }, res, next) => {
+  const { rows } = await Product.update(params.id, body)
 
   res.redirect('/admin/products')
 }

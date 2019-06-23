@@ -16,7 +16,7 @@ exports.products = async (req, res, next) => {
 exports.productById = async (req, res, next) => {
   const id = req.params.id
   const product = await Product.findById(id)
-  console.log('found product: ', product)
+
   res.render('shop/product-details', { pageTitle: 'Product details', uri: '/products', product })
 }
 

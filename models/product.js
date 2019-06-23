@@ -18,12 +18,12 @@ module.exports = class Product {
 
   async save() {
     try {
-      const queryObject = {
+      const queryObj = {
         text: 'INSERT INTO products(title, description, image_url, price) VALUES($1, $2, $3, $4) RETURNING *',
         values: [this.title, this.description, this.imageUrl, this.price],
       }
 
-      return await query(queryObject)
+      return await query(queryObj)
     } catch (err) {
       console.error(err)
     }
@@ -43,12 +43,12 @@ module.exports = class Product {
 
   static async findById(id) {
     try {
-      const queryObject = {
+      const queryObj = {
         text: 'SELECT * FROM products WHERE product_id = $1',
         values: [id],
       }
 
-      const { rows } = await query(queryObject)
+      const { rows } = await query(queryObj)
       const product = rows[0]
 
       return product
@@ -63,27 +63,18 @@ module.exports = class Product {
     return intersectionBy(products, ids, 'id')
   }
 
-  // TODO: Replace with update values in the DB
   static async update(id, values) {
-    const products = await this.getAll()
-    const idx = products.findIndex(product => product.id === id)
-
-    // If we found product to edit
-    if (idx !== -1) {
-      // Update all the values of found product
-      products[idx] = { ...products[idx], ...values }
-
-      try {
-        // Save the file with updated products
-        await fs.writeFile(FILE_PATH, JSON.stringify(products), 'utf8')
-
-        return true
-      } catch (err) {
-        console.error(err)
-        return err
+    try {
+      const queryObj = {
+        text:
+          'UPDATE products SET title = $2, description = $3, image_url = $4, price = $5 WHERE product_id = $1 RETURNING product_id, title, description, image_url, price;',
+        values: [id, values.title, values.description, values.image_url, values.price],
       }
-    } else {
-      console.error(`Could not find the product with id: ${id}`)
+
+      return await query(queryObj)
+    } catch (err) {
+      console.error(err)
+      return err
     }
   }
 
