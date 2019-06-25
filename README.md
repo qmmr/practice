@@ -16,7 +16,7 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 ```
 
--   create `products` table
+-   create `products` table (only if you're not using Sequelize)
 
 ```bash
 CREATE TABLE products (
@@ -27,4 +27,15 @@ CREATE TABLE products (
     price NUMERIC NOT NULL,
     PRIMARY KEY (product_id)
 );
+```
+
+-   use `sequelize` to connect to the DB and manage your Models
+-   to copy data between databases use `pg_dump -t table_to_copy source_db | psql target_db`
+-   to copy data between tables use
+
+```
+   INSERT INTO table(column1,column2,...)
+   SELECT column1,column2,...
+   FROM another_table
+   WHERE condition;
 ```
