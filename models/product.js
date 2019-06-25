@@ -34,7 +34,7 @@ Product.init(
       allowNull: false,
     },
   },
-  { sequelize }
+  { sequelize, modelName: 'product' }
 )
 
 module.exports = Product
