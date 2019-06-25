@@ -9,7 +9,10 @@ exports.index = (req, res, next) => {
 
 exports.products = async (req, res, next) => {
   // Render products available to buy
-  const products = await Product.getAll()
+  const products = await Product.findAll({
+    attributes: ['title', 'description', 'image_url', 'price'],
+  })
+
   res.render('shop/products', { pageTitle: 'Products', uri: '/products', products })
 }
 
