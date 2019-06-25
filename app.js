@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const path = require('path')
 
 // const rootDir = require('./utils/root')
+const sequelize = require('./utils/db')
 const adminRoutes = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
 
@@ -30,6 +31,13 @@ app.use((req, res, next) => {
   res.status(404).sendFile(path.join(__dirname, 'views', '404.html'))
 })
 
-app.listen(PORT, () => {
-  console.log(`server is listening on port ${PORT}...`)
-})
+try {
+  sequelize.authenticate()
+  sequelize.sync()
+  console.log('Connection to postgres has been established!')
+  app.listen(PORT, () => {
+    console.log(`server is listening on port ${PORT}...`)
+  })
+} catch (err) {
+  console.error(err)
+}

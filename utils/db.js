@@ -1,13 +1,9 @@
-const { Pool } = require('pg')
+const Sequelize = require('sequelize')
 
-const pool = new Pool({
-  user: process.env.PGUSER,
-  host: process.env.PGHOST,
-  database: process.env.PGDATABASE,
-  password: null,
-  port: process.env.PGPORT,
+const { PGUSER, PGDATABASE, PGPASSWORD, PGHOST } = process.env
+const sequelize = new Sequelize(PGDATABASE, PGUSER, PGPASSWORD, {
+  host: PGHOST,
+  dialect: 'postgres',
 })
 
-module.exports = {
-  query: (query, params) => pool.query(query, params),
-}
+module.exports = sequelize

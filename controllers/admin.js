@@ -3,10 +3,14 @@ const Product = require('../models/product')
 /** GET requests */
 exports.products = async (req, res, next) => {
   // Render admin products
+  const products = await Product.findAll({
+    attributes: ['title', 'description', 'image_url', 'price'],
+  })
+
   res.render('admin/products', {
     pageTitle: 'Admin :: Products',
     uri: '/admin/products',
-    products: await Product.getAll(),
+    products,
   })
 }
 

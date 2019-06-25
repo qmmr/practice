@@ -1,86 +1,47 @@
-const { query } = require('../utils/db')
+// const { query } = require('../utils/db')
 
-const intersectionBy = require('lodash/intersectionBy')
+const Sequelize = require('sequelize')
+const sequelize = require('../utils/db')
+const Model = Sequelize.Model
 
-module.exports = class Product {
-  constructor({ title, description, imageUrl, price }) {
-    this.title = title
-    this.description = description
-    this.imageUrl = imageUrl
-    this.price = price
-  }
+class Product extends Model {}
+Product.init(
+  {
+    id: {
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
+    },
 
-  async save() {
-    try {
-      const queryObj = {
-        text: 'INSERT INTO products(title, description, image_url, price) VALUES($1, $2, $3, $4) RETURNING *',
-        values: [this.title, this.description, this.imageUrl, this.price],
-      }
+    title: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
 
-      return await query(queryObj)
-    } catch (err) {
-      console.error(err)
-    }
-  }
+    description: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
 
-  static async getAll() {
-    try {
-      const { rows } = await query('SELECT * FROM products')
+    image_url: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
 
-      return rows
-    } catch (err) {
-      console.error(err)
-      // In case of an error, at least return empty array
-      return []
-    }
-  }
+    price: {
+      type: Sequelize.NUMERIC,
+      allowNull: false,
+    },
+  },
+  { sequelize }
+)
 
-  static async findById(id) {
-    try {
-      const queryObj = {
-        text: 'SELECT * FROM products WHERE product_id = $1',
-        values: [id],
-      }
+module.exports = Product
+// const intersectionBy = require('lodash/intersectionBy')
 
-      const { rows } = await query(queryObj)
-      const product = rows[0]
+//   static async findByIDs(ids) {
+//     const products = await this.getAll()
 
-      return product
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
-  static async findByIDs(ids) {
-    const products = await this.getAll()
-
-    return intersectionBy(products, ids, 'id')
-  }
-
-  static async update(id, values) {
-    try {
-      const queryObj = {
-        text:
-          'UPDATE products SET title = $2, description = $3, image_url = $4, price = $5 WHERE product_id = $1 RETURNING product_id, title, description, image_url, price;',
-        values: [id, values.title, values.description, values.image_url, values.price],
-      }
-
-      return await query(queryObj)
-    } catch (err) {
-      console.error(err)
-      return err
-    }
-  }
-
-  static async delete(id) {
-    try {
-      return await query({
-        text: `DELETE FROM products WHERE product_id = $1`,
-        values: [id],
-      })
-    } catch (err) {
-      console.error(err)
-      return err
-    }
-  }
-}
+//     return intersectionBy(products, ids, 'id')
+//   }
