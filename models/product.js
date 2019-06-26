@@ -33,6 +33,16 @@ Product.init(
       type: Sequelize.NUMERIC,
       allowNull: false,
     },
+
+    createdAt: {
+      field: 'created_at',
+      type: Sequelize.DATE,
+    },
+
+    updatedAt: {
+      field: 'updated_at',
+      type: Sequelize.DATE,
+    },
   },
   { sequelize, modelName: 'product' }
 )
