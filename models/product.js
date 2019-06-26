@@ -44,7 +44,7 @@ Product.init(
       type: Sequelize.DATE,
     },
   },
-  { sequelize, modelName: 'product' }
+  { sequelize, modelName: 'product', underscored: true }
 )
 
 module.exports = Product
