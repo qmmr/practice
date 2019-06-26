@@ -2,10 +2,16 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const path = require('path')
 
-// const rootDir = require('./utils/root')
 const sequelize = require('./utils/db')
 const adminRoutes = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
+
+// require models
+const Product = require('./models/product')
+const User = require('./models/user')
+// Define association between models
+Product.belongsTo(User, {})
+User.hasMany(Product)
 
 const PORT = process.env.PORT || 3000
 
