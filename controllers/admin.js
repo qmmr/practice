@@ -4,7 +4,7 @@ const Product = require('../models/product')
 exports.products = async (req, res, next) => {
   // Render admin products
   const products = await Product.findAll({
-    attributes: ['title', 'description', 'image_url', 'price'],
+    attributes: ['product_id', 'title', 'description', 'image_url', 'price'],
   })
 
   res.render('admin/products', {
@@ -46,7 +46,11 @@ exports.updateProduct = async ({ params, body }, res, next) => {
 
 // FIXME: This should be sent as DELETE request by JavaScript!!!
 exports.deleteProduct = async (req, res, next) => {
-  await Product.delete(req.params.id)
+  try {
+    await Product.destroy({ where: { product_id: req.params.id } })
+  } catch (err) {
+    console.error(`There was an error when trying to DELETE product with id: ${req.params.id}`, err)
+  }
 
   res.redirect('/admin/products')
 }
