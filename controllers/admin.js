@@ -21,9 +21,13 @@ exports.addProduct = (req, res, next) => {
 
 // Render admin/edit-product template
 exports.editProduct = async (req, res, next) => {
-  const product = await Product.findById(req.params.id)
+  try {
+    const [product] = await Product.findAll({ where: { product_id: req.params.id } })
 
-  res.render('admin/edit-product', { pageTitle: 'Admin :: Edit Product', uri: '/admin/edit-product', product })
+    res.render('admin/edit-product', { pageTitle: 'Admin :: Edit Product', uri: '/admin/edit-product', product })
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 /** POST requests */
@@ -42,9 +46,23 @@ exports.createProduct = async (req, res, next) => {
 
 // FIXME: This should be sent as PUT or PATCH request by JavaScript!!!
 exports.updateProduct = async ({ params, body }, res, next) => {
-  const { rows } = await Product.update(params.id, body)
+  try {
+    const { title, description, image_url, price } = body
+    const [updatedCount] = await Product.update(
+      { title, description, image_url, price },
+      {
+        where: { product_id: params.id },
+      }
+    )
 
-  res.redirect('/admin/products')
+    if (updatedCount === 1) {
+      res.redirect('/admin/products')
+    } else {
+      // TODO: Toast notification that something went wrong...
+    }
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 // FIXME: This should be sent as DELETE request by JavaScript!!!
