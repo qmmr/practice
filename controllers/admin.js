@@ -28,13 +28,16 @@ exports.editProduct = async (req, res, next) => {
 
 /** POST requests */
 exports.createProduct = async (req, res, next) => {
-  // Create product from POST request
-  const { title, description, imageUrl, price } = req.body
-  const product = new Product({ title, description, imageUrl, price })
-  const savedProduct = await product.save()
+  try {
+    // Create product from POST request
+    const { title, description, image_url, price } = req.body
+    const product = await Product.create({ title, description, image_url, price })
 
-  // TODO: Add Toast notification
-  res.redirect('/admin/products')
+    // TODO: Add Toast notification
+    res.redirect('/admin/products')
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 // FIXME: This should be sent as PUT or PATCH request by JavaScript!!!
