@@ -7,7 +7,7 @@ const Model = Sequelize.Model
 class Product extends Model {}
 Product.init(
   {
-    id: {
+    product_id: {
       type: Sequelize.UUID,
       defaultValue: Sequelize.UUIDV4,
       allowNull: false,
