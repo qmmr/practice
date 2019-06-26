@@ -39,3 +39,11 @@ CREATE TABLE products (
    FROM another_table
    WHERE condition;
 ```
+
+### TIPS & TRICKS
+
+`CREATE TABLE products_tmp (LIKE products);` quickly duplicate a table
+
+`INSERT INTO products_tmp SELECT * FROM products;` and then fill it with data from the original table
+
+`TABLE products ADD COLUMN created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW();` to add column with default values and NOT NULL constraint
