@@ -6,7 +6,7 @@ const Model = Sequelize.Model
 class User extends Model {}
 User.init(
   {
-    user_id: {
+    id: {
       type: Sequelize.UUID,
       defaultValue: Sequelize.UUIDV4,
       allowNull: false,
@@ -26,11 +26,13 @@ User.init(
     createdAt: {
       field: 'created_at',
       type: Sequelize.DATE,
+      defaultValue: Sequelize.NOW,
     },
 
     updatedAt: {
       field: 'updated_at',
       type: Sequelize.DATE,
+      defaultValue: Sequelize.NOW,
     },
   },
   { sequelize, modelName: 'user', underscored: true }

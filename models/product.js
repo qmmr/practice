@@ -20,12 +20,12 @@ Product.init(
     },
 
     description: {
-      type: Sequelize.STRING,
+      type: Sequelize.TEXT,
       allowNull: false,
     },
 
     image_url: {
-      type: Sequelize.STRING,
+      type: Sequelize.TEXT,
       allowNull: false,
     },
 
@@ -37,11 +37,13 @@ Product.init(
     createdAt: {
       field: 'created_at',
       type: Sequelize.DATE,
+      defaultValue: Sequelize.NOW,
     },
 
     updatedAt: {
       field: 'updated_at',
       type: Sequelize.DATE,
+      defaultValue: Sequelize.NOW,
     },
   },
   { sequelize, modelName: 'product', underscored: true }
