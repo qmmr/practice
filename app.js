@@ -9,10 +9,18 @@ const shopRoutes = require('./routes/shop')
 // require models
 const Product = require('./models/product')
 const User = require('./models/user')
+const Cart = require('./models/cart')
+const CartItem = require('./models/cart-item')
 
 // Define association between models
 Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' })
 User.hasMany(Product)
+
+User.hasOne(Cart)
+Cart.belongsTo(User) // Not needed as the above defines this relation
+
+Cart.belongsToMany(Product, { through: CartItem })
+Product.belongsToMany(Cart, { through: CartItem })
 
 const PORT = process.env.PORT || 3000
 

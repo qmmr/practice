@@ -1,5 +1,3 @@
-// const { query } = require('../utils/db')
-
 const Sequelize = require('sequelize')
 const sequelize = require('../utils/db')
 const Model = Sequelize.Model
@@ -7,7 +5,7 @@ const Model = Sequelize.Model
 class Product extends Model {}
 Product.init(
   {
-    product_id: {
+    id: {
       type: Sequelize.UUID,
       defaultValue: Sequelize.UUIDV4,
       allowNull: false,

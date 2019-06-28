@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize')
 const sequelize = require('../utils/db')
 
-class Cart extends Sequelize.Model {}
-Cart.init(
+class CartItem extends Sequelize.Model {}
+CartItem.init(
   {
     id: {
       type: Sequelize.UUID,
@@ -10,8 +10,13 @@ Cart.init(
       allowNull: false,
       primaryKey: true,
     },
+
+    quantity: {
+      type: Sequelize.NUMERIC,
+      allowNull: false,
+    },
   },
-  { sequelize, modelName: 'cart', underscored: true }
+  { sequelize, modelName: 'cartItem', underscored: true }
 )
 
-module.exports = Cart
+module.exports = CartItem
