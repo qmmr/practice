@@ -9,8 +9,9 @@ const shopRoutes = require('./routes/shop')
 // require models
 const Product = require('./models/product')
 const User = require('./models/user')
+
 // Define association between models
-Product.belongsTo(User, {})
+Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' })
 User.hasMany(Product)
 
 const PORT = process.env.PORT || 3000
@@ -28,7 +29,8 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(async (req, res, next) => {
   try {
     // INFO: user_id will change when table is altered!
-    let user = await User.findByPk('aa72cf55-b9ae-4221-8867-c9799e707d16')
+    const USER_ID = '91e4907a-8e0c-45ec-87bf-341d3cbc57ef'
+    let user = await User.findByPk(USER_ID)
     // Add user to every req
     req.user = user
     next()
@@ -53,9 +55,9 @@ app.use((req, res, next) => {
 try {
   sequelize.authenticate()
   sequelize.sync()
-  console.log('Connection to postgres has been established!')
+  console.log('Connection to postgres has been established!\n')
   app.listen(PORT, () => {
-    console.log(`server is listening on port ${PORT}...`)
+    console.log(`server is listening on port ${PORT}...\n`)
   })
 } catch (err) {
   console.error(err)
