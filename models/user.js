@@ -26,13 +26,13 @@ User.init(
     createdAt: {
       field: 'created_at',
       type: Sequelize.DATE,
-      defaultValue: Sequelize.NOW,
+      defaultValue: Sequelize.NOW, // INFO: Does not seem to work :(
     },
 
     updatedAt: {
       field: 'updated_at',
       type: Sequelize.DATE,
-      defaultValue: Sequelize.NOW,
+      defaultValue: Sequelize.NOW, // INFO: Does not seem to work :(,
     },
   },
   { sequelize, modelName: 'user', underscored: true }

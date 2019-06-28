@@ -2,8 +2,8 @@ const Product = require('../models/product')
 
 /** GET requests */
 exports.products = async (req, res, next) => {
-  // Render admin products
-  const products = await Product.findAll({
+  // Render user products
+  const products = await req.user.getProducts({
     attributes: ['product_id', 'title', 'description', 'image_url', 'price'],
   })
 
@@ -22,7 +22,7 @@ exports.addProduct = (req, res, next) => {
 // Render admin/edit-product template
 exports.editProduct = async (req, res, next) => {
   try {
-    const [product] = await Product.findAll({ where: { product_id: req.params.id } })
+    const [product] = await req.user.getProducts({ where: { product_id: req.params.id } })
 
     res.render('admin/edit-product', { pageTitle: 'Admin :: Edit Product', uri: '/admin/edit-product', product })
   } catch (err) {
@@ -33,9 +33,10 @@ exports.editProduct = async (req, res, next) => {
 /** POST requests */
 exports.createProduct = async (req, res, next) => {
   try {
-    // Create product from POST request
+    // Create product from POST request using sequelize association with User
     const { title, description, image_url, price } = req.body
-    const product = await Product.create({ title, description, image_url, price })
+    // createProduct is same as Product.create but adds the user_id to product :+1:
+    const product = await req.user.createProduct({ title, description, image_url, price })
 
     // TODO: Add Toast notification
     res.redirect('/admin/products')
@@ -44,7 +45,7 @@ exports.createProduct = async (req, res, next) => {
   }
 }
 
-// FIXME: This should be sent as PUT or PATCH request by JavaScript!!!
+// FIXME: This should be sent as PUT or PATCH request...
 exports.updateProduct = async ({ params, body }, res, next) => {
   try {
     const { title, description, image_url, price } = body
@@ -65,7 +66,7 @@ exports.updateProduct = async ({ params, body }, res, next) => {
   }
 }
 
-// FIXME: This should be sent as DELETE request by JavaScript!!!
+// FIXME: This should be sent as DELETE request...
 exports.deleteProduct = async (req, res, next) => {
   try {
     await Product.destroy({ where: { product_id: req.params.id } })
