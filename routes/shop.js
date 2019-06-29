@@ -25,4 +25,7 @@ router.get('/checkout', shopCtrl.checkout)
 // POST /cart
 router.post('/cart', shopCtrl.addToCart)
 
+// POST /cart/remove
+router.post('/cart/remove', shopCtrl.removeFromCart)
+
 module.exports = router

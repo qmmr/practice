@@ -9,7 +9,7 @@
        <% for (let product of products) { %>
         <div class="col-sm-6">
           <div class="card">
-            <img src="<%= product.imageUrl %>" class="card-img-top" alt="<%= product.title %>" />
+            <img src="<%= product.image_url %>" class="card-img-top" alt="<%= product.title %>" />
             <div class="card-body">
               <h5 class="card-title"><%= product.title %></h5>
               <p class="card-text"><%= product.price %></p>
@@ -18,9 +18,9 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text">Ilość:</span>
                 </div>
-                <input type="number" step="1" name="quantity" value="<%= product.quantity %>" />
+                <input type="number" step="1" name="quantity" value="<%= product.cartItem.quantity %>" />
               </div>
-              <%- include('../partials/add-to-cart-btn.ejs', { product }) %>
+              <%- include('../partials/remove-from-cart-btn.ejs', { product }) %>
             </div>
           </div>
         </div>
