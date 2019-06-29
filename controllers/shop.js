@@ -69,32 +69,31 @@ exports.checkout = async (req, res, next) => {
 }
 
 /** POST requests */
+
+// Add item to the cart
 exports.addToCart = async ({ body, user }, res, next) => {
-  // Add item to the cart
   const productId = body.id
-  console.log('\nid of the product we want to add to the cart: ', productId, '\n')
   // First find the user's cart
   let cart = await user.getCart()
   // Find if the product is in the cart
-  let products = await cart.getProducts({ where: { id: productId } })
-  let product = products.length ? products[0] : null
+  let [product] = await cart.getProducts({ where: { id: productId } })
 
+  // Update quantity if product was found...
   if (product) {
-    console.log('product raw: ', product.get({ plain: true }))
+    await cart.addProduct(product, { through: { quantity: parseInt(product.cartItem.quantity) + 1 } })
   } else {
     // No such product in the cart, let's add it...
     product = await Product.findByPk(productId)
-    console.log('product found by id: ', product.get({ plain: true }))
     await cart.addProduct(product, { through: { quantity: 1 } })
-    console.log('product added to cart :+1:')
-    res.redirect('/cart')
   }
+
   // TODO: What to return?
   // TODO: How to deal with errors?
+  res.redirect('/cart')
 }
 
+// Remove item from the cart
 exports.removeFromCart = async ({ body, user }, res, next) => {
-  // Remove item from the cart
   const id = body.id
   console.log('\nid of the product we want to remove from the cart: ', id, '\n')
   // First find the user's cart
