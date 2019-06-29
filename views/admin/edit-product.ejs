@@ -4,7 +4,7 @@
   <body>
     <%- include('../partials/main-nav.ejs', { uri: '/admin/add-product' }) %>
     <main>
-      <form action="/admin/products/update/<%= product.product_id %>" method="POST">
+      <form action="/admin/products/update/<%= product.id %>" method="POST">
         <div class="form-group">
           <label for="title">Title</label>
           <input
@@ -49,6 +49,7 @@
           >
         </div>
         <button type="submit" class="btn btn-primary">Update product</button>
+        <a href="/admin/products" class="btn btn-danger">Cancel</a>
       </form>
     </main>
   </body>

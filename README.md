@@ -20,12 +20,12 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 ```bash
 CREATE TABLE products (
-    product_id uuid DEFAULT uuid_generate_v4 (),
+    id uuid DEFAULT uuid_generate_v4 (),
     title VARCHAR NOT NULL,
     description VARCHAR NOT NULL,
     image_url VARCHAR NOT NULL,
     price NUMERIC NOT NULL,
-    PRIMARY KEY (product_id)
+    PRIMARY KEY (id)
 );
 ```
 

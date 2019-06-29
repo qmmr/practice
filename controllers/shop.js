@@ -10,7 +10,9 @@ exports.index = (req, res, next) => {
 exports.products = async (req, res, next) => {
   // Render products available to buy
   const products = await Product.findAll({
-    attributes: ['product_id', 'title', 'description', 'image_url', 'price'],
+    attributes: {
+      include: '*',
+    },
   })
 
   res.render('shop/products', { pageTitle: 'Products', uri: '/products', products })
@@ -18,9 +20,9 @@ exports.products = async (req, res, next) => {
 
 exports.productById = async (req, res, next) => {
   const [product] = await Product.findAll({
-    attributes: ['product_id', 'title', 'description', 'image_url', 'price'],
+    attributes: ['id', 'title', 'description', 'image_url', 'price'],
     where: {
-      product_id: req.params.id,
+      id: req.params.id,
     },
   })
 

@@ -14,8 +14,8 @@
               <p class="card-text"><%= product.price %> zł</p>
               <p class="card-text"><%= product.description %></p>
               <div class="d-flex flex-row justify-content-between">
-                <a href="/admin/edit-product/<%= product.product_id %>" class="btn btn-primary">Edit</a>
-                <form method="POST" action="/admin/product/delete/<%= product.product_id %>">
+                <a href="/admin/edit-product/<%= product.id %>" class="btn btn-primary">Edit</a>
+                <form method="POST" action="/admin/product/delete/<%= product.id %>">
                   <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
               </div>

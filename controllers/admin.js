@@ -3,15 +3,18 @@ const Product = require('../models/product')
 /** GET requests */
 exports.products = async (req, res, next) => {
   // Render user products
-  const products = await req.user.getProducts({
-    attributes: ['product_id', 'title', 'description', 'image_url', 'price'],
-  })
+  try {
+    const products = await req.user.getProducts()
 
-  res.render('admin/products', {
-    pageTitle: 'Admin :: Products',
-    uri: '/admin/products',
-    products,
-  })
+    res.render('admin/products', {
+      pageTitle: 'Admin :: Products',
+      uri: '/admin/products',
+      products,
+    })
+  } catch (err) {
+    // TODO: Handle error
+    console.error(err)
+  }
 }
 
 // Render admin/add-product template
@@ -22,7 +25,7 @@ exports.addProduct = (req, res, next) => {
 // Render admin/edit-product template
 exports.editProduct = async (req, res, next) => {
   try {
-    const [product] = await req.user.getProducts({ where: { product_id: req.params.id } })
+    const [product] = await req.user.getProducts({ where: { id: req.params.id } })
 
     res.render('admin/edit-product', { pageTitle: 'Admin :: Edit Product', uri: '/admin/edit-product', product })
   } catch (err) {
@@ -52,7 +55,7 @@ exports.updateProduct = async ({ params, body }, res, next) => {
     const [updatedCount] = await Product.update(
       { title, description, image_url, price },
       {
-        where: { product_id: params.id },
+        where: { id: params.id },
       }
     )
 
@@ -69,7 +72,7 @@ exports.updateProduct = async ({ params, body }, res, next) => {
 // FIXME: This should be sent as DELETE request...
 exports.deleteProduct = async (req, res, next) => {
   try {
-    await Product.destroy({ where: { product_id: req.params.id } })
+    await Product.destroy({ where: { id: req.params.id } })
   } catch (err) {
     console.error(`There was an error when trying to DELETE product with id: ${req.params.id}`, err)
   }
