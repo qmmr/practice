@@ -94,9 +94,18 @@ exports.addToCart = async ({ body, user }, res, next) => {
 
 // Remove item from the cart
 exports.removeFromCart = async ({ body, user }, res, next) => {
-  const id = body.id
-  console.log('\nid of the product we want to remove from the cart: ', id, '\n')
-  // First find the user's cart
-  let cart = await user.getCart()
-  // Find if the product is in the cart
+  try {
+    const productId = body.id
+
+    // First find the user's cart
+    let cart = await user.getCart()
+
+    // Find the product in the cart and remove it
+    const [product] = await cart.getProducts({ where: { id: productId } })
+    await product.cartItem.destroy()
+
+    res.redirect('/cart')
+  } catch (err) {
+    console.error(err)
+  }
 }
