@@ -31,9 +31,15 @@ main {
 /** cart.ejs */
 .quantity-group {
 }
+
 .quantity-group input {
     font-size: 1.1rem;
     font-weight: 400;
     text-align: center;
     width: 5rem;
+}
+
+.cart-list-item img {
+    height: 120px;
+    width: 120px;
 }
