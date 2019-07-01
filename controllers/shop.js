@@ -50,11 +50,15 @@ exports.cart = async (req, res, next) => {
   }
 }
 
-exports.orders = async (req, res, next) => {
-  // Render orders
-  const products = await Product.getAll()
+exports.orders = async ({ user }, res, next) => {
+  try {
+    // Render orders
+    const orders = await user.getOrders({ include: ['products'] })
 
-  res.render('shop/orders', { pageTitle: 'Your orders', uri: '/orders', products })
+    res.render('shop/orders', { pageTitle: 'Your orders', uri: '/orders', orders })
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 exports.checkout = async ({ user, query }, res, next) => {

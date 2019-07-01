@@ -4,8 +4,26 @@
   <body>
     <%- include('../partials/main-nav.ejs', { uri: '/cart' }) %>
     <main>
+      <% if (orders.length) { %>
+      <ol class="list-group orders-list">
+        <% orders.forEach(order => { %>
+        <li>
+          <ul class="list-group products-list">
+            <% order.products.forEach(product => { %>
+            <li class="list-group-item d-flex flex-direction-row justify-content-start align-items-center">
+              <img class="image-thumbnail" src="<%= product.image_url %>" alt="Image of <%= product.title %>" />
+              <p class="title"><%= product.title %></p>
+              <p class="quantity">Ilość: <%= product.orderItem.quantity %></p>
+              <p class="price">Cena: <%= product.price %></p>
+            </li>
+            <% }) %>
+          </ul>
+        </li>
+        <% }) %>
+      </ol>
+      <% } else { %>
       <p>You don't have any orders, yet!</p>
-      <span>Dummy content</span>
+      <% } %>
     </main>
   </body>
 </html>
