@@ -58,7 +58,6 @@ app.use('/admin', adminRoutes)
 app.use(shopRoutes)
 
 app.get('/learn-more', (req, res, next) => {
-  // res.sendFile(path.join(__dirname, 'views', 'index.html'))
   res.render('learn-more', { pageTitle: 'Learn more' })
 })
 

@@ -64,8 +64,6 @@ exports.orders = async ({ user }, res, next) => {
 exports.checkout = async ({ user, query }, res, next) => {
   // Render checkout
   const [order] = await user.getOrders({ where: { id: query.id }, include: ['products'] })
-  console.log('order: ', order)
-  console.log('order.products: ', order.products)
 
   res.render('shop/checkout', { pageTitle: 'Checkout', uri: '/checkout', order })
 }
@@ -102,7 +100,7 @@ exports.removeFromCart = async ({ body, user }, res, next) => {
   try {
     const productId = body.id
 
-    // First find the user's cart
+    // Get user's cart
     let cart = await user.getCart()
 
     // Find the product in the cart and remove it
@@ -120,6 +118,9 @@ exports.addToCheckout = async ({ user }, res, next) => {
     // Get products in the current Cart
     const cart = await user.getCart()
     const products = await cart.getProducts()
+    // FIXME: This is wrong, the order should be created when "Order" button is clicked
+    // This should only move products in the cart to the checkout page where user can decided how to pay, set address etc.
+    // Create new Order...
     const order = await user.createOrder()
 
     // Add products from cart to order
@@ -134,7 +135,7 @@ exports.addToCheckout = async ({ user }, res, next) => {
     )
 
     const query = querystring.stringify({ id: order.id })
-    console.log('\nquery: ', query, '\n')
+
     res.redirect('/checkout?' + query)
   } catch (err) {
     console.error(err)
