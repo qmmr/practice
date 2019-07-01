@@ -74,24 +74,27 @@ exports.checkout = async ({ user, query }, res, next) => {
 
 // Add item to the cart
 exports.addToCart = async ({ body, user }, res, next) => {
-  const productId = body.id
-  // First find the user's cart
-  let cart = await user.getCart()
-  // Find if the product is in the cart
-  let [product] = await cart.getProducts({ where: { id: productId } })
+  try {
+    const productId = body.id
+    // First find the user's cart
+    let cart = await user.getCart()
+    // Find if the product is in the cart
+    let [product] = await cart.getProducts({ where: { id: productId } })
 
-  // Update quantity if product was found...
-  if (product) {
-    await cart.addProduct(product, { through: { quantity: parseInt(product.cartItem.quantity) + 1 } })
-  } else {
-    // No such product in the cart, let's add it...
-    product = await Product.findByPk(productId)
-    await cart.addProduct(product, { through: { quantity: 1 } })
+    // Update quantity if product was found...
+    if (product) {
+      await cart.addProduct(product, { through: { quantity: parseInt(product.cartItem.quantity) + 1 } })
+    } else {
+      // No such product in the cart, let's add it...
+      product = await Product.findByPk(productId)
+      await cart.addProduct(product, { through: { quantity: 1 } })
+    }
+
+    // TODO: What to return?
+    res.redirect('/cart')
+  } catch (err) {
+    console.error(err)
   }
-
-  // TODO: What to return?
-  // TODO: How to deal with errors?
-  res.redirect('/cart')
 }
 
 // Remove item from the cart
