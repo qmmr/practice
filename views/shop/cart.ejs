@@ -10,7 +10,7 @@
       <ul class="list-group cart-list">
        <% for (let product of products) { %>
         <li class="list-group-item cart-list-item d-flex justify-content-between align-items-center">
-            <img src="<%= product.image_url %>" class="card-img-top" alt="<%= product.title %>" />
+            <img src="<%= product.image_url %>" class="card-img-top img-thumbnail" alt="<%= product.title %>" />
             <h5 class="card-title"><%= product.title %></h5>
             <p class="card-text"><%= product.price %></p>
             <div class="d-flex quantity-group justify-content-end input-group">
@@ -23,6 +23,11 @@
         </li>
       <% } %>
       </ul>
+      <div class="col-sm">
+        <form method="POST" action="/checkout">
+          <button type="submit" class="btn btn-success btn-block">Checkout</button>
+        </form>
+      </div>
     <% } else { %>
       <p>No products in your cart. Why don't have a look at <a href="/products">our products</a>?</a></p>
     <% } %>

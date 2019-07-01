@@ -4,7 +4,20 @@
   <body>
     <%- include('../partials/main-nav.ejs', { uri: '/checkout' }) %>
     <main>
-      <p>TODO: Display the contents of your cart...</p>
+      <% if (order) { %>
+      <ul class="list-group checkout-list">
+        <% order.products.forEach(product => { %>
+        <li class="list-group-item d-flex flex-direction-row justify-content-start align-items-center">
+          <img class="image-thumbnail" src="<%= product.image_url %>" alt="Image of <%= product.title %>" />
+          <p class="title"><%= product.title %></p>
+          <p class="quantity">Ilość: <%= product.orderItem.quantity %></p>
+          <p class="price">Cena: <%= product.price %></p>
+        </li>
+        <% }) %>
+      </ul>
+      <% } else { %>
+      <p>No order found, sorry!</p>
+      <% } %>
     </main>
   </body>
 </html>

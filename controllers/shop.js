@@ -1,3 +1,4 @@
+const querystring = require('querystring')
 const Product = require('../models/product')
 const Cart = require('../models/cart')
 
@@ -42,30 +43,27 @@ exports.cart = async (req, res, next) => {
     }
     // Now the cart is available so we can fetch products...
     let products = await cart.getProducts()
-    console.log('cart products: ', products)
-    console.log('cartItem: ', products[0].cartItem.get({ plain: true }))
 
     res.render('shop/cart', { pageTitle: 'Cart products', uri: '/cart', products })
   } catch (err) {
     console.error(err)
   }
-  // // In order to show quantity, we need to add cartProducts quantity to product object
-  // const combinedProducts = products.map(product => {
-  //   const { quantity } = cartProducts.find(cProduct => cProduct.id === product.id)
-  //   return { ...product, quantity }
-  // })
 }
 
 exports.orders = async (req, res, next) => {
   // Render orders
   const products = await Product.getAll()
+
   res.render('shop/orders', { pageTitle: 'Your orders', uri: '/orders', products })
 }
 
-exports.checkout = async (req, res, next) => {
+exports.checkout = async ({ user, query }, res, next) => {
   // Render checkout
-  const products = await Product.getAll()
-  res.render('shop/checkout', { pageTitle: 'Checkout', uri: '/checkout', products })
+  const [order] = await user.getOrders({ where: { id: query.id }, include: ['products'] })
+  console.log('order: ', order)
+  console.log('order.products: ', order.products)
+
+  res.render('shop/checkout', { pageTitle: 'Checkout', uri: '/checkout', order })
 }
 
 /** POST requests */
@@ -105,6 +103,32 @@ exports.removeFromCart = async ({ body, user }, res, next) => {
     await product.cartItem.destroy()
 
     res.redirect('/cart')
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+exports.addToCheckout = async ({ user }, res, next) => {
+  try {
+    // Get products in the current Cart
+    const cart = await user.getCart()
+    const products = await cart.getProducts()
+    const order = await user.createOrder()
+
+    // Add products from cart to order
+    order.addProducts(
+      products.map(product => {
+        product.orderItem = {
+          quantity: product.cartItem.quantity,
+        }
+
+        return product
+      })
+    )
+
+    const query = querystring.stringify({ id: order.id })
+    console.log('\nquery: ', query, '\n')
+    res.redirect('/checkout?' + query)
   } catch (err) {
     console.error(err)
   }

@@ -19,8 +19,11 @@ router.get('/cart', shopCtrl.cart)
 // GET /cart
 router.get('/orders', shopCtrl.orders)
 
-// GET /cart
+// GET /checkout
 router.get('/checkout', shopCtrl.checkout)
+
+// POST /checkout
+router.post('/checkout', shopCtrl.addToCheckout)
 
 // POST /cart
 router.post('/cart', shopCtrl.addToCart)

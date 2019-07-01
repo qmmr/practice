@@ -43,3 +43,23 @@ main {
     height: 120px;
     width: 120px;
 }
+
+/* checkout.ejs */
+.checkout-list li img {
+    flex: 50px 0 0;
+    height: 50px;
+}
+
+.checkout-list li p {
+    margin: 0;
+}
+
+.checkout-list li .title {
+    flex: auto 2 0;
+    margin: 0 0 0 2rem;
+}
+
+.checkout-list li .price {
+    flex: 15% 0 0;
+    text-align: right;
+}
