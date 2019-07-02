@@ -4,7 +4,7 @@
   <body>
     <%- include('../partials/main-nav.ejs', { uri: '/admin/add-product' }) %>
     <main>
-      <form action="/admin/products/update/<%= product.id %>" method="POST">
+      <form action="/admin/products/update/<%= product._id %>" method="POST">
         <div class="form-group">
           <label for="title">Title</label>
           <input

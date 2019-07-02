@@ -19,6 +19,13 @@ class Product {
     return result
   }
 
+  static async updateOne(id, values) {
+    const db = getDB()
+    const collection = db.collection('products')
+
+    return await collection.updateOne({ _id: ObjectId(id) }, { $set: values })
+  }
+
   static async fetchAll() {
     const db = getDB()
     const collection = db.collection('products')

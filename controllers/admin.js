@@ -52,15 +52,9 @@ exports.createProduct = async (req, res, next) => {
 // FIXME: This should be sent as PUT or PATCH request...
 exports.updateProduct = async ({ params, body }, res, next) => {
   try {
-    const { title, description, image_url, price } = body
-    const [updatedCount] = await Product.update(
-      { title, description, image_url, price },
-      {
-        where: { id: params.id },
-      }
-    )
+    const { modifiedCount } = await Product.updateOne(params.id, { ...body })
 
-    if (updatedCount === 1) {
+    if (modifiedCount === 1) {
       res.redirect('/admin/products')
     } else {
       // TODO: Toast notification that something went wrong...
