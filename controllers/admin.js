@@ -1,10 +1,10 @@
-// const Product = require('../models/product')
+const Product = require('../models/product')
 
 /** GET requests */
 exports.products = async (req, res, next) => {
   // Render user products
   try {
-    const products = []
+    const products = await Product.getAll()
 
     res.render('admin/products', {
       pageTitle: 'Admin :: Products',
@@ -38,8 +38,9 @@ exports.createProduct = async (req, res, next) => {
   try {
     // Create product from POST request using sequelize association with User
     const { title, description, image_url, price } = req.body
-    // createProduct is same as Product.create but adds the user_id to product :+1:
-    const product = await req.user.createProduct({ title, description, image_url, price })
+    const product = new Product({ title, description, image_url, price })
+    const result = await product.save()
+    console.log('createProduct: ', result)
 
     // TODO: Add Toast notification
     res.redirect('/admin/products')

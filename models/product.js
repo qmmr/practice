@@ -1,50 +1,29 @@
-const Sequelize = require('sequelize')
-const sequelize = require('../utils/db')
+const { getDB } = require('../utils/db')
 
-class Product extends Sequelize.Model {}
-Product.init(
-  {
-    id: {
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4,
-      allowNull: false,
-      primaryKey: true,
-    },
+class Product {
+  constructor({ title, description, image_url, price }) {
+    this.title = title
+    this.description = description
+    this.image_url = image_url
+    this.price = price
+  }
 
-    title: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },
+  async save() {
+    console.log('saving the product...')
+    const db = getDB()
+    const result = await db.collection('products').insertOne(this)
+    console.log('result: ', result)
 
-    description: {
-      type: Sequelize.TEXT,
-      allowNull: false,
-    },
+    return result
+  }
 
-    image_url: {
-      type: Sequelize.TEXT,
-      allowNull: false,
-    },
+  static async getAll() {
+    const db = getDB()
+    const collection = db.collection('products')
 
-    price: {
-      type: Sequelize.NUMERIC,
-      allowNull: false,
-    },
-
-    createdAt: {
-      field: 'created_at',
-      type: Sequelize.DATE,
-      defaultValue: Sequelize.NOW,
-    },
-
-    updatedAt: {
-      field: 'updated_at',
-      type: Sequelize.DATE,
-      defaultValue: Sequelize.NOW,
-    },
-  },
-  { sequelize, modelName: 'product', underscored: true }
-)
+    return await collection.find({}).toArray()
+  }
+}
 
 module.exports = Product
 // const intersectionBy = require('lodash/intersectionBy')
