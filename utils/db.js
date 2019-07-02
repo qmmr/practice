@@ -1,9 +1,12 @@
-const Sequelize = require('sequelize')
+const { MongoClient } = require('mongodb')
 
-const { PGUSER, PGDATABASE, PGPASSWORD, PGHOST } = process.env
-const sequelize = new Sequelize(PGDATABASE, PGUSER, PGPASSWORD, {
-  host: PGHOST,
-  dialect: 'postgres',
-})
+const { DB_USER = 'rumoren', DB_PASSWORD, DB_NAME } = process.env
+const MONGO_URI = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@node-complete-esmpc.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`
 
-module.exports = sequelize
+const connect = async () => {
+  const client = await MongoClient.connect(MONGO_URI, { useNewUrlParser: true })
+
+  return client
+}
+
+module.exports = connect

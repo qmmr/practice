@@ -1,10 +1,10 @@
-const Product = require('../models/product')
+// const Product = require('../models/product')
 
 /** GET requests */
 exports.products = async (req, res, next) => {
   // Render user products
   try {
-    const products = await req.user.getProducts()
+    const products = []
 
     res.render('admin/products', {
       pageTitle: 'Admin :: Products',
