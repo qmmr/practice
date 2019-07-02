@@ -4,7 +4,7 @@ const Product = require('../models/product')
 exports.products = async (req, res, next) => {
   // Render user products
   try {
-    const products = await Product.getAll()
+    const products = await Product.fetchAll()
 
     res.render('admin/products', {
       pageTitle: 'Admin :: Products',
@@ -23,9 +23,9 @@ exports.addProduct = (req, res, next) => {
 }
 
 // Render admin/edit-product template
-exports.editProduct = async (req, res, next) => {
+exports.editProduct = async ({ params }, res, next) => {
   try {
-    const [product] = await req.user.getProducts({ where: { id: req.params.id } })
+    const product = await Product.fetchById(params.id)
 
     res.render('admin/edit-product', { pageTitle: 'Admin :: Edit Product', uri: '/admin/edit-product', product })
   } catch (err) {
