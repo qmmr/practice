@@ -65,12 +65,12 @@ exports.updateProduct = async ({ params, body }, res, next) => {
 }
 
 // FIXME: This should be sent as DELETE request...
-exports.deleteProduct = async (req, res, next) => {
+exports.deleteProduct = async ({ params }, res, next) => {
   try {
-    await Product.destroy({ where: { id: req.params.id } })
+    await Product.deleteOne(params.id)
+
+    res.redirect('/admin/products')
   } catch (err) {
     console.error(`There was an error when trying to DELETE product with id: ${req.params.id}`, err)
   }
-
-  res.redirect('/admin/products')
 }

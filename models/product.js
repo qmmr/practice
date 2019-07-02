@@ -40,6 +40,14 @@ class Product {
 
     return result
   }
+
+  static async deleteOne(id) {
+    const db = getDB()
+    const collection = db.collection('products')
+    const result = await collection.deleteOne({ _id: new ObjectId(id) })
+
+    return result
+  }
 }
 
 module.exports = Product
