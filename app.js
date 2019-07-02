@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const path = require('path')
 
-const connect = require('./utils/db')
+const { connect, getDB } = require('./utils/db')
 const adminRoutes = require('./routes/admin')
 // const shopRoutes = require('./routes/shop')
 
@@ -48,7 +48,6 @@ app.use((req, res, next) => {
 ;(async () => {
   try {
     const client = await connect()
-    const db = client.db()
     console.log('Connection to mongodb was successful!')
     app.listen(PORT, () => {
       console.log(`server is listening on port ${PORT}...\n`)
