@@ -59,12 +59,13 @@ exports.checkout = async ({ user, query }, res, next) => {
 // Add item to the cart
 exports.addToCart = async ({ body, user }, res, next) => {
   try {
-    const productId = body.id
-    const cart = await user.addToCart(productId)
-    // console.log('cart: ', cart)
+    const modifiedCount = await user.addToCart(body.id)
 
-    // TODO: What to return?
-    res.redirect('/cart')
+    if (modifiedCount === 1) {
+      res.redirect('/cart')
+    } else {
+      console.error('modifiedCount error: ', modifiedCount)
+    }
   } catch (err) {
     console.error(err)
   }

@@ -20,7 +20,6 @@ class User {
     console.log('foundIndex: ', foundIndex)
     if (foundIndex === -1) {
       // Add new product
-      console.log('add new product...')
       this.cart = {
         products: [
           ...this.cart.products,
@@ -72,8 +71,8 @@ class User {
 
     // Save the cart
     const result = await collection.updateOne({ _id: new ObjectId(this._id) }, { $set: { cart } })
-    console.log('saveCart -> result: ', Object.keys(result))
-    console.log('saveCart -> result.modifiedCount: ', result.modifiedCount)
+    // console.log('saveCart -> result: ', Object.keys(result))
+    // console.log('saveCart -> result.modifiedCount: ', result.modifiedCount)
 
     return result
   }
