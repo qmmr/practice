@@ -61,7 +61,7 @@ exports.addToCart = async ({ body, user }, res, next) => {
   try {
     const productId = body.id
     const cart = await user.addToCart(productId)
-    console.log('cart: ', cart)
+    // console.log('cart: ', cart)
 
     // TODO: What to return?
     res.redirect('/cart')
@@ -73,14 +73,7 @@ exports.addToCart = async ({ body, user }, res, next) => {
 // Remove item from the cart
 exports.removeFromCart = async ({ body, user }, res, next) => {
   try {
-    const productId = body.id
-
-    // Get user's cart
-    let cart = await user.getCart()
-
-    // Find the product in the cart and remove it
-    const [product] = await cart.getProducts({ where: { id: productId } })
-    await product.cartItem.destroy()
+    let result = await user.removeFromCart(body.id)
 
     res.redirect('/cart')
   } catch (err) {

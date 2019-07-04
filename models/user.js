@@ -32,18 +32,17 @@ class User {
       }
     } else {
       // Update quantity
-      console.log('Hmm, I should be updating the quantity...')
+      this.cart.products[foundIndex].quantity = this.cart.products[foundIndex].quantity + 1
     }
 
-    console.log('productId: ', productId)
-    console.log('this.cart: ', this.cart)
-    console.log('this._id: ', this._id)
+    // console.log('productId: ', productId)
+    // console.log('this.cart: ', this.cart)
+    // console.log('this._id: ', this._id)
 
     // Save the cart
-    const result = await collection.updateOne({ _id: new ObjectId(this._id) }, { $set: { cart: this.cart } })
-    console.log('addToCart result: ', result)
+    const { modifiedCount } = await this.saveCart()
 
-    return result
+    return modifiedCount
   }
 
   async getCart() {
@@ -60,11 +59,30 @@ class User {
 
       return product
     })
-    console.log('products: ', products)
+    // console.log('products: ', products)
 
     return {
       products,
     }
+  }
+
+  async saveCart(cart = this.cart) {
+    const db = getDB()
+    const collection = db.collection('users')
+
+    // Save the cart
+    const result = await collection.updateOne({ _id: new ObjectId(this._id) }, { $set: { cart } })
+    console.log('saveCart -> result: ', Object.keys(result))
+    console.log('saveCart -> result.modifiedCount: ', result.modifiedCount)
+
+    return result
+  }
+
+  async removeFromCart(productId) {
+    // Find the product in the cart and remove it
+    this.cart.products = this.cart.products.filter(product => product._id.toString() !== productId)
+
+    return await this.saveCart()
   }
 }
 
