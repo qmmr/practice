@@ -1,6 +1,5 @@
 const querystring = require('querystring')
 const Product = require('../models/product')
-const Cart = require('../models/cart')
 
 /** GET requests */
 exports.index = (req, res, next) => {
@@ -10,11 +9,7 @@ exports.index = (req, res, next) => {
 
 exports.products = async (req, res, next) => {
   // Render products available to buy
-  const products = await Product.findAll({
-    attributes: {
-      include: '*',
-    },
-  })
+  const products = await Product.fetchAll()
 
   res.render('shop/products', { pageTitle: 'Products', uri: '/products', products })
 }
@@ -33,16 +28,7 @@ exports.productById = async (req, res, next) => {
 exports.cart = async (req, res, next) => {
   try {
     const user = req.user
-    let cart = await user.getCart()
-
-    if (cart != null) {
-      console.log('found cart for that user: ', cart.get({ plain: true }))
-    } else {
-      console.log('did not find cart, gotta create a new one...')
-      cart = await user.createCart()
-    }
-    // Now the cart is available so we can fetch products...
-    let products = await cart.getProducts()
+    const { products } = await user.getCart()
 
     res.render('shop/cart', { pageTitle: 'Cart products', uri: '/cart', products })
   } catch (err) {
@@ -74,19 +60,8 @@ exports.checkout = async ({ user, query }, res, next) => {
 exports.addToCart = async ({ body, user }, res, next) => {
   try {
     const productId = body.id
-    // First find the user's cart
-    let cart = await user.getCart()
-    // Find if the product is in the cart
-    let [product] = await cart.getProducts({ where: { id: productId } })
-
-    // Update quantity if product was found...
-    if (product) {
-      await cart.addProduct(product, { through: { quantity: parseInt(product.cartItem.quantity) + 1 } })
-    } else {
-      // No such product in the cart, let's add it...
-      product = await Product.findByPk(productId)
-      await cart.addProduct(product, { through: { quantity: 1 } })
-    }
+    const cart = await user.addToCart(productId)
+    console.log('cart: ', cart)
 
     // TODO: What to return?
     res.redirect('/cart')
