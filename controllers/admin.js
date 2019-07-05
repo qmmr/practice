@@ -36,11 +36,10 @@ exports.editProduct = async ({ params }, res, next) => {
 /** POST requests */
 exports.createProduct = async (req, res, next) => {
   try {
-    // Create product from POST request using sequelize association with User
+    // Create product from POST request
     const { title, description, image_url, price } = req.body
     const product = new Product({ title, description, image_url, price })
     const result = await product.save()
-    console.log('createProduct: ', result)
 
     // TODO: Add Toast notification
     res.redirect('/admin/products')
