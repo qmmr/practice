@@ -34,7 +34,8 @@ exports.cart = async (req, res, next) => {
 exports.orders = async ({ user }, res, next) => {
   try {
     // Render orders
-    const orders = await user.getOrders({ include: ['products'] })
+    // TODO: Not implemented yet...
+    const orders = []
 
     res.render('shop/orders', { pageTitle: 'Your orders', uri: '/orders', orders })
   } catch (err) {

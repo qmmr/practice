@@ -2,7 +2,7 @@
 <html lang="en">
   <%- include('../partials/head.ejs', { pageTitle }) %>
   <body>
-    <%- include('../partials/main-nav.ejs', { uri: '/admin/add-product' }) %>
+    <%- include('../partials/main-nav.ejs', { uri }) %>
     <main>
       <form action="/admin/products" method="POST">
         <div class="form-group">
