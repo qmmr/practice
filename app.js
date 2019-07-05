@@ -2,8 +2,9 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const path = require('path')
 const { ObjectId } = require('mongodb')
+const mongoose = require('mongoose')
 
-const { connect, getDB } = require('./utils/db')
+// const { connect, getDB } = require('./utils/db')
 const adminRoutes = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
 
@@ -27,11 +28,11 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // Custom middleware to expose user in every request
 app.use(async (req, res, next) => {
   try {
-    const db = getDB()
-    const collection = db.collection('users')
-    const user = await collection.findOne({ _id: ObjectId('5d1c5af1bae3bb8123a4572b') })
+    // const db = getDB()
+    // const collection = db.collection('users')
+    // const user = await collection.findOne({ _id: ObjectId('5d1c5af1bae3bb8123a4572b') })
     // Use User Model as instance
-    req.user = new User(user)
+    // req.user = new User(user)
     next()
   } catch (err) {
     console.error(err)
@@ -51,8 +52,11 @@ app.use((req, res, next) => {
 })
 ;(async () => {
   try {
-    const client = await connect()
+    const { DB_USER = 'rumoren', DB_PASSWORD, DB_NAME } = process.env
+    const MONGO_URI = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@node-complete-esmpc.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`
+    const client = await mongoose.connect(MONGO_URI, { useNewUrlParser: true })
     console.log('Connection to mongodb was successful!')
+
     app.listen(PORT, () => {
       console.log(`server is listening on port ${PORT}...\n`)
     })

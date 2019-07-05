@@ -8,8 +8,8 @@ exports.index = (req, res, next) => {
 }
 
 exports.products = async (req, res, next) => {
-  // Render products available to buy
-  const products = await Product.fetchAll()
+  // Render all products available to buy
+  const products = await Product.find()
 
   res.render('shop/products', { pageTitle: 'Products', uri: '/products', products })
 }
