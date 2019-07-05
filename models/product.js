@@ -10,11 +10,9 @@ class Product {
   }
 
   async save() {
-    console.log('saving the product...')
     const db = getDB()
     const collection = db.collection('products')
     const result = await collection.insertOne(this)
-    console.log('result: ', result)
 
     return result
   }

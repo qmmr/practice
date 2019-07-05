@@ -14,13 +14,8 @@ exports.products = async (req, res, next) => {
   res.render('shop/products', { pageTitle: 'Products', uri: '/products', products })
 }
 
-exports.productById = async (req, res, next) => {
-  const [product] = await Product.findAll({
-    attributes: ['id', 'title', 'description', 'image_url', 'price'],
-    where: {
-      id: req.params.id,
-    },
-  })
+exports.productById = async ({ params }, res, next) => {
+  const product = await Product.fetchById(params.id)
 
   res.render('shop/product-details', { pageTitle: 'Product details', uri: '/products', product })
 }
