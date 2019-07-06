@@ -68,7 +68,7 @@ exports.updateProduct = async ({ params, body }, res, next) => {
 // FIXME: This should be sent as DELETE request...
 exports.deleteProduct = async ({ params }, res, next) => {
   try {
-    await Product.deleteOne(params.id)
+    await Product.findByIdAndDelete(params.id)
 
     res.redirect('/admin/products')
   } catch (err) {
