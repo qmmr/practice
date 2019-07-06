@@ -15,7 +15,7 @@ exports.products = async (req, res, next) => {
 }
 
 exports.productById = async ({ params }, res, next) => {
-  const product = await Product.fetchById(params.id)
+  const product = await Product.findById(params.id)
 
   res.render('shop/product-details', { pageTitle: 'Product details', uri: '/products', product })
 }

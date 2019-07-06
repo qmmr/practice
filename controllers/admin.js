@@ -4,7 +4,7 @@ const Product = require('../models/product')
 exports.products = async (req, res, next) => {
   // Render user products
   try {
-    const products = await Product.fetchAll()
+    const products = await Product.find()
 
     res.render('admin/products', {
       pageTitle: 'Admin :: Products',
@@ -25,7 +25,7 @@ exports.addProduct = (req, res, next) => {
 // Render admin/edit-product template
 exports.editProduct = async ({ params }, res, next) => {
   try {
-    const product = await Product.fetchById(params.id)
+    const product = await Product.findById(params.id)
 
     res.render('admin/edit-product', { pageTitle: 'Admin :: Edit Product', uri: '/admin/edit-product', product })
   } catch (err) {
@@ -51,13 +51,15 @@ exports.createProduct = async (req, res, next) => {
 // FIXME: This should be sent as PUT or PATCH request...
 exports.updateProduct = async ({ params, body }, res, next) => {
   try {
-    const { modifiedCount } = await Product.updateOne(params.id, { ...body })
+    const { title, description, image_url, price } = body
+    const product = await Product.findById(params.id)
+    product.title = title
+    product.description = description
+    product.image_url = image_url
+    product.price = price
+    await product.save()
 
-    if (modifiedCount === 1) {
-      res.redirect('/admin/products')
-    } else {
-      // TODO: Toast notification that something went wrong...
-    }
+    res.redirect('/admin/products')
   } catch (err) {
     console.error(err)
   }
