@@ -28,11 +28,9 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // Custom middleware to expose user in every request
 app.use(async (req, res, next) => {
   try {
-    // const db = getDB()
-    // const collection = db.collection('users')
-    // const user = await collection.findOne({ _id: ObjectId('5d1c5af1bae3bb8123a4572b') })
-    // Use User Model as instance
-    // req.user = new User(user)
+    const user = await User.findById('5d1c5af1bae3bb8123a4572b')
+    req.user = user
+
     next()
   } catch (err) {
     console.error(err)
@@ -55,8 +53,18 @@ app.use((req, res, next) => {
     const { DB_USER = 'rumoren', DB_PASSWORD, DB_NAME } = process.env
     const MONGO_URI = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@node-complete-esmpc.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`
     const client = await mongoose.connect(MONGO_URI, { useNewUrlParser: true })
-    console.log('Connection to mongodb was successful!')
+    console.log('\nConnection to mongodb was successful! 🎉\n')
 
+    const user = await User.findOne()
+    if (!user) {
+      let newUser = new User({
+        name: 'Joe Doe',
+        email: 'joe@doe.com',
+        cart: {
+          products: [],
+        },
+      })
+    }
     app.listen(PORT, () => {
       console.log(`server is listening on port ${PORT}...\n`)
     })
