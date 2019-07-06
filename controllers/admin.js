@@ -34,11 +34,11 @@ exports.editProduct = async ({ params }, res, next) => {
 }
 
 /** POST requests */
-exports.createProduct = async (req, res, next) => {
+exports.createProduct = async ({ body, user }, res, next) => {
   try {
     // Create product from POST request
-    const { title, description, image_url, price } = req.body
-    const product = new Product({ title, description, image_url, price })
+    const { title, description, image_url, price } = body
+    const product = new Product({ title, description, image_url, price, user_id: user._id })
     const result = await product.save()
 
     // TODO: Add Toast notification
