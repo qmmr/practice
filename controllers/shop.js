@@ -7,8 +7,8 @@ exports.index = (req, res, next) => {
   res.render('shop/index', { pageTitle: 'Buylando', uri: '/' })
 }
 
+// Render all products available to buy
 exports.products = async (req, res, next) => {
-  // Render all products available to buy
   const products = await Product.find()
 
   res.render('shop/products', { pageTitle: 'Products', uri: '/products', products })
@@ -22,9 +22,10 @@ exports.productById = async ({ params }, res, next) => {
 
 exports.cart = async ({ user }, res, next) => {
   try {
-    const products = await user.getCart()
+    // Fetch products stored as ids in cart.products array
+    const { cart } = await user.populate('cart.products.product').execPopulate()
 
-    res.render('shop/cart', { pageTitle: 'Cart products', uri: '/cart', products })
+    res.render('shop/cart', { pageTitle: 'Cart products', uri: '/cart', products: cart.products })
   } catch (err) {
     console.error(err)
   }
@@ -54,13 +55,9 @@ exports.checkout = async ({ user, query }, res, next) => {
 // Add item to the cart
 exports.addToCart = async ({ body, user }, res, next) => {
   try {
-    const modifiedCount = await user.addToCart(body.id)
+    await user.addToCart(body.id)
 
-    if (modifiedCount === 1) {
-      res.redirect('/cart')
-    } else {
-      console.error('modifiedCount error: ', modifiedCount)
-    }
+    res.redirect('/cart')
   } catch (err) {
     console.error(err)
   }

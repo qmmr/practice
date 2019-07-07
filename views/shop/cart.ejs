@@ -8,18 +8,18 @@
     <div class="col-sm">
     <% if (products.length) { %>
       <ul class="list-group cart-list">
-       <% for (let product of products) { %>
+       <% for (let cartProduct of products) { %>
         <li class="list-group-item cart-list-item d-flex justify-content-between align-items-center">
-            <img src="<%= product.image_url %>" class="card-img-top img-thumbnail" alt="<%= product.title %>" />
-            <h5 class="card-title"><%= product.title %></h5>
-            <p class="card-text"><%= product.price %></p>
+            <img src="<%= cartProduct.product.image_url %>" class="card-img-top img-thumbnail" alt="<%= cartProduct.product.title %>" />
+            <h5 class="card-title"><%= cartProduct.product.title %></h5>
+            <p class="card-text"><%= cartProduct.product.price %></p>
             <div class="d-flex quantity-group justify-content-end input-group">
               <div class="input-group-prepend">
                 <span class="input-group-text">Ilość:</span>
               </div>
-              <input type="number" step="1" name="quantity" value="<%= product.quantity %>" />
+              <input type="number" step="1" name="quantity" value="<%= cartProduct.quantity %>" />
             </div>
-            <%- include('../partials/remove-from-cart-btn.ejs', { product }) %>
+            <%- include('../partials/remove-from-cart-btn.ejs', { cartProduct }) %>
         </li>
       <% } %>
       </ul>
