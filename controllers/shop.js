@@ -2,8 +2,8 @@ const querystring = require('querystring')
 const Product = require('../models/product')
 
 /** GET requests */
+// Render index page of the shop
 exports.index = (req, res, next) => {
-  // Render index page of the shop
   res.render('shop/index', { pageTitle: 'Buylando', uri: '/' })
 }
 
@@ -20,10 +20,9 @@ exports.productById = async ({ params }, res, next) => {
   res.render('shop/product-details', { pageTitle: 'Product details', uri: '/products', product })
 }
 
-exports.cart = async (req, res, next) => {
+exports.cart = async ({ user }, res, next) => {
   try {
-    const user = req.user
-    const { products } = await user.getCart()
+    const products = await user.getCart()
 
     res.render('shop/cart', { pageTitle: 'Cart products', uri: '/cart', products })
   } catch (err) {
@@ -31,9 +30,9 @@ exports.cart = async (req, res, next) => {
   }
 }
 
+// Render orders
 exports.orders = async ({ user }, res, next) => {
   try {
-    // Render orders
     // TODO: Not implemented yet...
     const orders = []
 
@@ -43,8 +42,8 @@ exports.orders = async ({ user }, res, next) => {
   }
 }
 
+// Render checkout
 exports.checkout = async ({ user, query }, res, next) => {
-  // Render checkout
   const [order] = await user.getOrders({ where: { id: query.id }, include: ['products'] })
 
   res.render('shop/checkout', { pageTitle: 'Checkout', uri: '/checkout', order })
@@ -78,9 +77,9 @@ exports.removeFromCart = async ({ body, user }, res, next) => {
   }
 }
 
+// Get products in the current Cart
 exports.addToCheckout = async ({ user }, res, next) => {
   try {
-    // Get products in the current Cart
     const cart = await user.getCart()
     const products = await cart.getProducts()
     // FIXME: This is wrong, the order should be created when "Order" button is clicked

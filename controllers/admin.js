@@ -1,8 +1,8 @@
 const Product = require('../models/product')
 
 /** GET requests */
+// Render user products
 exports.products = async (req, res, next) => {
-  // Render user products
   try {
     const products = await Product.find()
 
@@ -34,11 +34,11 @@ exports.editProduct = async ({ params }, res, next) => {
 }
 
 /** POST requests */
+// Create product from POST request
 exports.createProduct = async ({ body, user }, res, next) => {
   try {
-    // Create product from POST request
     const { title, description, image_url, price } = body
-    const product = new Product({ title, description, image_url, price, user_id: user._id })
+    const product = new Product({ title, description, image_url, price, user })
     const result = await product.save()
 
     // TODO: Add Toast notification

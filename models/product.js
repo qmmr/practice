@@ -22,7 +22,7 @@ const productSchema = new Schema({
     required: true,
   },
 
-  user_id: {
+  user: {
     type: mongoose.Types.ObjectId,
     ref: 'User',
     required: true,
