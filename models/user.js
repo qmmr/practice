@@ -33,7 +33,7 @@ userSchema.methods.addToCart = function(productId) {
     this.cart.products[foundIndex].quantity = this.cart.products[foundIndex].quantity + 1
   }
 
-  // Save the cart
+  // Save the model
   return this.save()
 }
 

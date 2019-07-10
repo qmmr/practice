@@ -66,7 +66,7 @@ exports.addToCart = async ({ body, user }, res, next) => {
 // Remove item from the cart
 exports.removeFromCart = async ({ body, user }, res, next) => {
   try {
-    let result = await user.removeFromCart(body.id)
+    await user.removeFromCart(body.id)
 
     res.redirect('/cart')
   } catch (err) {
@@ -74,7 +74,7 @@ exports.removeFromCart = async ({ body, user }, res, next) => {
   }
 }
 
-// Get products in the current Cart
+// Copy products in the current Cart to Checkout
 exports.addToCheckout = async ({ user }, res, next) => {
   try {
     const cart = await user.getCart()
