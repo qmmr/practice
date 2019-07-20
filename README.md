@@ -9,6 +9,7 @@
 ### Using Postgres:
 
 -   uses npm module `pg` to connect with Postgress database
+-   connect with your local DB `psql -U <username> -h <host> -d <database_name>`
 -   use envirnoment variables to connect to the DB: `PGUSER`, `PGHOST`, `PGDATABASE`, `PGPORT`
 -   for modern PostgreSQL versions (9.1 and newer) install the `uuid-ossp` extension
 
