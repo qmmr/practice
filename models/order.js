@@ -1,17 +1,13 @@
-const Sequelize = require('sequelize')
-const sequelize = require('../utils/db')
+const mongoose = require('mongoosej')
 
-class Order extends Sequelize.Model {}
-Order.init(
-  {
-    id: {
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4,
-      allowNull: false,
-      primaryKey: true,
+const orderSchema = new mongoose.Schema({
+  products: [
+    {
+      product: { type: mongoose.Types.ObjectId, ref: 'Product', required: true },
+      quantity: { type: Number, required: true },
     },
-  },
-  { sequelize, modelName: 'order', underscored: true }
-)
+  ],
+  user: { type: mongoose.Types.ObjectId, ref: 'User', required: true },
+})
 
-module.exports = Order
+module.exports = mongoose.model('Order', orderSchema)
