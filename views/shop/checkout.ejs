@@ -4,19 +4,32 @@
   <body>
     <%- include('../partials/main-nav.ejs', { uri: '/checkout' }) %>
     <main>
-      <% if (order) { %>
+      <% if (orders) { %>
       <ul class="list-group checkout-list">
-        <% order.products.forEach(product => { %>
-        <li class="list-group-item d-flex flex-direction-row justify-content-start align-items-center">
-          <img class="image-thumbnail" src="<%= product.image_url %>" alt="Image of <%= product.title %>" />
-          <p class="title"><%= product.title %></p>
-          <p class="quantity">Ilość: <%= product.orderItem.quantity %></p>
-          <p class="price">Cena: <%= product.price %></p>
+        <% orders.forEach(order => { %>
+        <li class="list-group-item d-flex flex-column justify-content-start align-items-start">
+          <p>Order id: <%= order._id.toString() %></p>
+          <p>Created at: <%= order.createdAt %></p>
+          <p>User: <%= order.user.name %></p>
+          <ul class="list-group checkout-list">
+            <% order.products.forEach(product => { %>
+            <li class="list-group-item d-flex flex-row justify-content-start align-items-center">
+              <img
+                class="image-thumbnail"
+                src="<%= product.product.image_url %>"
+                alt="Image of <%= product.product.title %>"
+              />
+              <p class="title"><%= product.product.title %></p>
+              <p class="quantity">Ilość: <%= product.quantity %></p>
+              <p class="price">Cena: <%= product.quantity * product.product.price %></p>
+            </li>
+            <% }) %>
+          </ul>
         </li>
         <% }) %>
       </ul>
       <% } else { %>
-      <p>No order found, sorry!</p>
+      <p>No orders found, sorry!</p>
       <% } %>
     </main>
   </body>
