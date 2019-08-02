@@ -4,15 +4,12 @@ const path = require('path')
 const { ObjectId } = require('mongodb')
 const mongoose = require('mongoose')
 
-// const { connect, getDB } = require('./utils/db')
 const adminRoutes = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
+const authRoutes = require('./routes/auth')
 
 // require models
-// const Product = require('./models/product')
 const User = require('./models/user')
-// const Order = require('./models/order')
-// const OrderItem = require('./models/order-item')
 
 const PORT = process.env.PORT || 3000
 
@@ -38,6 +35,7 @@ app.use(async (req, res, next) => {
   }
 })
 
+app.use(authRoutes)
 app.use('/admin', adminRoutes)
 app.use(shopRoutes)
 

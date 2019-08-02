@@ -47,6 +47,7 @@ exports.orders = async ({ user }, res, next) => {
 // Render checkout
 exports.checkout = async ({ user, query }, res, next) => {
   // TODO: How many orders to fetch?
+  // FIXME: Checkout should render only one cart!!! This belongs to /orders...
   const orders = await Order.find({ user })
   orders.forEach(o => {
     console.log('checkout orders: ', o.products)
