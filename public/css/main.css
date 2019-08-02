@@ -45,6 +45,10 @@ main {
 }
 
 /* checkout.ejs */
+.checkout-list {
+    width: 100%;
+}
+
 .checkout-list li img {
     flex: 50px 0 0;
     height: 50px;
