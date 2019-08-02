@@ -1,5 +1,6 @@
 const querystring = require('querystring')
 const Product = require('../models/product')
+const Order = require('../models/order')
 
 /** GET requests */
 // Render index page of the shop
@@ -45,9 +46,22 @@ exports.orders = async ({ user }, res, next) => {
 
 // Render checkout
 exports.checkout = async ({ user, query }, res, next) => {
-  const [order] = await user.getOrders({ where: { id: query.id }, include: ['products'] })
+  // TODO: How many orders to fetch?
+  const orders = await Order.find({ user })
+  orders.forEach(o => {
+    console.log('checkout orders: ', o.products)
+  })
+  let populatedOrders = []
 
-  res.render('shop/checkout', { pageTitle: 'Checkout', uri: '/checkout', order })
+  for (let order of orders) {
+    await order.populate('products.product').execPopulate()
+    await order.populate('user').execPopulate()
+    populatedOrders.push(order)
+  }
+
+  console.log('populated orders: ', populatedOrders)
+
+  res.render('shop/checkout', { pageTitle: 'Checkout', uri: '/checkout', orders: populatedOrders })
 }
 
 /** POST requests */
@@ -77,25 +91,22 @@ exports.removeFromCart = async ({ body, user }, res, next) => {
 // Copy products in the current Cart to Checkout
 exports.addToCheckout = async ({ user }, res, next) => {
   try {
-    const cart = await user.getCart()
-    const products = await cart.getProducts()
+    // Fetch products stored as ids in cart.products array
+    const { cart } = await user.populate('cart.products.product').execPopulate()
+
+    console.log('addToCheckout products: ', cart.products)
     // FIXME: This is wrong, the order should be created when "Order" button is clicked
     // This should only move products in the cart to the checkout page where user can decided how to pay, set address etc.
     // Create new Order...
-    const order = await user.createOrder()
+    const order = await new Order({
+      user,
+      products: cart.products,
+    }).save()
 
-    // Add products from cart to order
-    order.addProducts(
-      products.map(product => {
-        product.orderItem = {
-          quantity: product.cartItem.quantity,
-        }
+    const query = querystring.stringify({ id: order._id.toString() })
 
-        return product
-      })
-    )
-
-    const query = querystring.stringify({ id: order.id })
+    // Clear the cart and redirect to checkout
+    await user.clearCart()
 
     res.redirect('/checkout?' + query)
   } catch (err) {
