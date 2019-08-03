@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const path = require('path')
 const { ObjectId } = require('mongodb')
 const mongoose = require('mongoose')
+const session = require('express-session')
 
 const adminRoutes = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
@@ -19,18 +20,14 @@ app.set('view engine', 'ejs')
 app.set('views', 'views')
 
 app.use(express.static(path.join(__dirname, 'public')))
-
 app.use(bodyParser.urlencoded({ extended: true }))
-
-// Cookies middleware :P
-app.use((req, res, next) => {
-  const cookies = req.get('Cookie')
-  console.log('cookies: ', cookies)
-  req.isLoggedIn = /isLoggedIn=true/.test(cookies)
-  req.isAdmin = /isAdmin=true/.test(cookies)
-
-  next()
-})
+app.use(
+  session({
+    secret: 'fear_thumb_disown_regime_refined',
+    resave: false,
+    saveUninitialized: false,
+  })
+)
 
 // Custom middleware to expose user in every request
 app.use(async (req, res, next) => {

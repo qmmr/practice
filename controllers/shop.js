@@ -4,8 +4,10 @@ const Order = require('../models/order')
 
 /** GET requests */
 // Render index page of the shop
-exports.index = (req, res, next) => {
-  const isAdmin = req.isAdmin
+exports.index = ({ session }, res, next) => {
+  const { isLoggedIn, isAdmin } = session
+  console.log('isLoggedIn: ', isLoggedIn)
+  console.log('isAdmin: ', isAdmin)
   res.render('shop/index', { pageTitle: 'Buylando', uri: '/', isAdmin })
 }
 

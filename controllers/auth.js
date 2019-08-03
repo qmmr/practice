@@ -5,17 +5,15 @@ exports.login = async ({ isLoggedIn, isAdmin }, res, next) => {
   res.render('auth/login', { pageTitle: 'Login', uri: '/login', isLoggedIn, isAdmin })
 }
 
-exports.handleLogin = async ({ body, isAdmin }, res, next) => {
+exports.handleLogin = async ({ body, session }, res, next) => {
   // TODO: Authenticate and redirect accordingly...
   // FIXME: FIX THIS :)
   if (body.email === 'joe@doe.com' && body.password === 'password') {
     // User is authenticated and isAdmin :D
-    // res.setHeader('Set-Cookie', 'isAdmin=true; Max-Age=60') cookie set for 60 seconds
-    // res.setHeader('Set-Cookie', 'isAdmin=true')
-    res.cookie('isAdmin', 'true', { expires: new Date(Date.now + 60000), httpOnly: true })
-    res.cookie('isLoggedIn', 'true', { expires: new Date(Date.now + 60000), httpOnly: true })
+    session.isLoggedIn = true
+    session.isAdmin = true
     res.redirect('/')
   } else {
-    res.render('auth/login', { pageTitle: 'Login', uri: '/login', isAdmin })
+    res.render('auth/login', { pageTitle: 'Login', uri: '/login' })
   }
 }
