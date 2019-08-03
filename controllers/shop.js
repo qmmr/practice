@@ -5,14 +5,15 @@ const Order = require('../models/order')
 /** GET requests */
 // Render index page of the shop
 exports.index = (req, res, next) => {
-  res.render('shop/index', { pageTitle: 'Buylando', uri: '/' })
+  const isAdmin = req.isAdmin
+  res.render('shop/index', { pageTitle: 'Buylando', uri: '/', isAdmin })
 }
 
 // Render all products available to buy
-exports.products = async (req, res, next) => {
+exports.products = async ({ isAdmin }, res, next) => {
   const products = await Product.find()
 
-  res.render('shop/products', { pageTitle: 'Products', uri: '/products', products })
+  res.render('shop/products', { pageTitle: 'Products', uri: '/products', products, isAdmin })
 }
 
 exports.productById = async ({ params }, res, next) => {
@@ -21,24 +22,24 @@ exports.productById = async ({ params }, res, next) => {
   res.render('shop/product-details', { pageTitle: 'Product details', uri: '/products', product })
 }
 
-exports.cart = async ({ user }, res, next) => {
+exports.cart = async ({ user, isAdmin }, res, next) => {
   try {
     // Fetch products stored as ids in cart.products array
     const { cart } = await user.populate('cart.products.product').execPopulate()
 
-    res.render('shop/cart', { pageTitle: 'Cart products', uri: '/cart', products: cart.products })
+    res.render('shop/cart', { pageTitle: 'Cart products', uri: '/cart', isAdmin, products: cart.products })
   } catch (err) {
     console.error(err)
   }
 }
 
 // Render orders
-exports.orders = async ({ user }, res, next) => {
+exports.orders = async ({ user, isAdmin }, res, next) => {
   try {
     // TODO: Not implemented yet...
     const orders = []
 
-    res.render('shop/orders', { pageTitle: 'Your orders', uri: '/orders', orders })
+    res.render('shop/orders', { pageTitle: 'Your orders', uri: '/orders', isAdmin, orders })
   } catch (err) {
     console.error(err)
   }

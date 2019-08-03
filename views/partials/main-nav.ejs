@@ -20,16 +20,22 @@
         <a class="nav-item nav-link <%= uri === '/products' ? 'active' : '' %>" href="/products">Products</a>
         <a class="nav-item nav-link <%= uri === '/cart' ? 'active' : '' %>" href="/cart">Cart</a>
         <a class="nav-item nav-link <%= uri === '/orders' ? 'active' : '' %>" href="/orders">Orders</a>
+        <% if (isAdmin) { %>
         <a class="nav-item nav-link <%= uri === '/admin/products' ? 'active' : '' %>" href="/admin/products"
           >Admin Products</a
         >
         <a class="nav-item nav-link <%= uri === '/admin/add-product' ? 'active' : '' %>" href="/admin/add-product"
           >Admin add Product</a
         >
+        <% } %>
       </div>
     </div>
     <div class="navbar-nav">
+      <% if (uri !== '/login') { %> <% if (!isAdmin) { %>
       <a class="nav-item nav-link <%= uri === '/login' ? 'active' : '' %>" href="/login">Login</a>
+      <% } %> <% } else { %> <% if (isAdmin) { %>
+      <a class="nav-item nav-link <%= uri === '/login' ? 'active' : '' %>" href="/login">Logout</a>
+      <% } %> <% } %>
     </div>
   </nav>
 </header>

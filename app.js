@@ -22,6 +22,16 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 app.use(bodyParser.urlencoded({ extended: true }))
 
+// Cookies middleware :P
+app.use((req, res, next) => {
+  const cookies = req.get('Cookie')
+  console.log('cookies: ', cookies)
+  req.isLoggedIn = /isLoggedIn=true/.test(cookies)
+  req.isAdmin = /isAdmin=true/.test(cookies)
+
+  next()
+})
+
 // Custom middleware to expose user in every request
 app.use(async (req, res, next) => {
   try {
