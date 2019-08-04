@@ -6,9 +6,8 @@ const Order = require('../models/order')
 // Render index page of the shop
 exports.index = ({ session }, res, next) => {
   const { isLoggedIn, isAdmin } = session
-  console.log('isLoggedIn: ', isLoggedIn)
-  console.log('isAdmin: ', isAdmin)
-  res.render('shop/index', { pageTitle: 'Buylando', uri: '/', isAdmin })
+
+  res.render('shop/index', { pageTitle: 'Buylando', uri: '/', isAdmin, isLoggedIn })
 }
 
 // Render all products available to buy

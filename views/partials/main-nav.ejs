@@ -31,11 +31,13 @@
       </div>
     </div>
     <div class="navbar-nav">
-      <% if (uri !== '/login') { %> <% if (!isAdmin) { %>
+      <% if (!isLoggedIn) { %>
       <a class="nav-item nav-link <%= uri === '/login' ? 'active' : '' %>" href="/login">Login</a>
-      <% } %> <% } else { %> <% if (isAdmin) { %>
-      <a class="nav-item nav-link <%= uri === '/login' ? 'active' : '' %>" href="/login">Logout</a>
-      <% } %> <% } %>
+      <% } %> <% if (isLoggedIn) { %>
+      <form action="/logout" method="POST">
+        <button type="submit" class="btn btn-link">Logout</button>
+      </form>
+      <% } %>
     </div>
   </nav>
 </header>
