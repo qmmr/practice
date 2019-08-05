@@ -4,17 +4,15 @@ const Order = require('../models/order')
 
 /** GET requests */
 // Render index page of the shop
-exports.index = ({ session }, res, next) => {
-  const { isLoggedIn, isAdmin } = session
-
+exports.index = ({ session: { isLoggedIn, isAdmin } }, res, next) => {
   res.render('shop/index', { pageTitle: 'Buylando', uri: '/', isAdmin, isLoggedIn })
 }
 
 // Render all products available to buy
-exports.products = async ({ isAdmin }, res, next) => {
+exports.products = async ({ session: { isAdmin, isLoggedIn } }, res, next) => {
   const products = await Product.find()
 
-  res.render('shop/products', { pageTitle: 'Products', uri: '/products', products, isAdmin })
+  res.render('shop/products', { pageTitle: 'Products', uri: '/products', products, isAdmin, isLoggedIn })
 }
 
 exports.productById = async ({ params }, res, next) => {
@@ -23,31 +21,31 @@ exports.productById = async ({ params }, res, next) => {
   res.render('shop/product-details', { pageTitle: 'Product details', uri: '/products', product })
 }
 
-exports.cart = async ({ user, isAdmin }, res, next) => {
+exports.cart = async ({ user, session: { isAdmin, isLoggedIn } }, res, next) => {
   try {
     // Fetch products stored as ids in cart.products array
     const { cart } = await user.populate('cart.products.product').execPopulate()
 
-    res.render('shop/cart', { pageTitle: 'Cart products', uri: '/cart', isAdmin, products: cart.products })
+    res.render('shop/cart', { pageTitle: 'Cart products', uri: '/cart', isAdmin, isLoggedIn, products: cart.products })
   } catch (err) {
     console.error(err)
   }
 }
 
 // Render orders
-exports.orders = async ({ user, isAdmin }, res, next) => {
+exports.orders = async ({ user, session: { isAdmin, isLoggedIn } }, res, next) => {
   try {
     // TODO: Not implemented yet...
     const orders = []
 
-    res.render('shop/orders', { pageTitle: 'Your orders', uri: '/orders', isAdmin, orders })
+    res.render('shop/orders', { pageTitle: 'Your orders', uri: '/orders', isAdmin, isLoggedIn, orders })
   } catch (err) {
     console.error(err)
   }
 }
 
 // Render checkout
-exports.checkout = async ({ user, query }, res, next) => {
+exports.checkout = async ({ user, query, session: { isAdmin, isLoggedIn } }, res, next) => {
   // TODO: How many orders to fetch?
   // FIXME: Checkout should render only one cart!!! This belongs to /orders...
   const orders = await Order.find({ user })
@@ -64,7 +62,7 @@ exports.checkout = async ({ user, query }, res, next) => {
 
   console.log('populated orders: ', populatedOrders)
 
-  res.render('shop/checkout', { pageTitle: 'Checkout', uri: '/checkout', orders: populatedOrders })
+  res.render('shop/checkout', { pageTitle: 'Checkout', uri: '/checkout', isAdmin, isLoggedIn, orders: populatedOrders })
 }
 
 /** POST requests */

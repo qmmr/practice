@@ -2,7 +2,7 @@ const Product = require('../models/product')
 
 /** GET requests */
 // Render user products
-exports.products = async ({ isAdmin }, res, next) => {
+exports.products = async ({ session: { isAdmin, isLoggedIn } }, res, next) => {
   try {
     const products = await Product.find()
 
@@ -11,6 +11,7 @@ exports.products = async ({ isAdmin }, res, next) => {
       uri: '/admin/products',
       products,
       isAdmin,
+      isLoggedIn,
     })
   } catch (err) {
     // TODO: Handle error
@@ -19,8 +20,8 @@ exports.products = async ({ isAdmin }, res, next) => {
 }
 
 // Render admin/add-product template
-exports.addProduct = ({ isAdmin }, res, next) => {
-  res.render('admin/add-product', { pageTitle: 'Admin :: Add Product', uri: '/admin/add-product', isAdmin })
+exports.addProduct = ({ session: { isAdmin, isLoggedIn } }, res, next) => {
+  res.render('admin/add-product', { pageTitle: 'Admin :: Add Product', uri: '/admin/add-product', isAdmin, isLoggedIn })
 }
 
 // Render admin/edit-product template
