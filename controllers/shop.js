@@ -15,10 +15,10 @@ exports.products = async ({ session: { isAdmin, isLoggedIn } }, res, next) => {
   res.render('shop/products', { pageTitle: 'Products', uri: '/products', products, isAdmin, isLoggedIn })
 }
 
-exports.productById = async ({ params }, res, next) => {
+exports.productById = async ({ params, session: { isAdmin, isLoggedIn } }, res, next) => {
   const product = await Product.findById(params.id)
 
-  res.render('shop/product-details', { pageTitle: 'Product details', uri: '/products', product })
+  res.render('shop/product-details', { pageTitle: 'Product details', uri: '/products', isAdmin, isLoggedIn, product })
 }
 
 exports.cart = async ({ user, session: { isAdmin, isLoggedIn } }, res, next) => {
