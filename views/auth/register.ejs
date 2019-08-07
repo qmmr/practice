@@ -4,7 +4,7 @@
   <body>
     <%- include('../partials/main-nav.ejs', { isAdmin }) %>
     <main>
-      <form method="POST" action="/login">
+      <form method="POST" action="/register">
         <div class="form-group">
           <label for="email">Email address</label>
           <input
@@ -21,9 +21,19 @@
           <input type="password" class="form-control" id="password" name="password" placeholder="Password" />
         </div>
         <div class="form-group">
-          <button type="submit" class="btn btn-primary">Login</button>
+          <label for="password-confirm">Confirm password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password-confirm"
+            name="password-confirm"
+            placeholder="Password"
+          />
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Register</button>
           <span style="padding: 20px 0 20px 20px;">or</span>
-          <a class="nav-item nav-link d-inline-block" href="/register">Register</a>
+          <a class="nav-item nav-link d-inline-block" href="/login">Login</a>
         </div>
       </form>
     </main>

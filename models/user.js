@@ -1,9 +1,11 @@
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true },
+  email: { type: String, minlength: 10, trim: true, required: true },
+  password: { type: String, minlength: 4, trim: true, required: true },
   cart: {
+    type: 'mixed',
+    default: { products: [] },
     products: [
       {
         product: { type: mongoose.Types.ObjectId, ref: 'Product', required: true },
