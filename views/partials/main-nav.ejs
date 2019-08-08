@@ -31,10 +31,10 @@
       </div>
     </div>
     <div class="navbar-nav">
-      <% if (!isLoggedIn) { %>
+      <% if (!isAuthenticated) { %>
       <a class="nav-item nav-link <%= uri === '/login' ? 'active' : '' %>" href="/login">Login</a>
       <a class="nav-item nav-link <%= uri === '/register' ? 'active' : '' %>" href="/register">Register</a>
-      <% } %> <% if (isLoggedIn) { %>
+      <% } %> <% if (isAuthenticated) { %>
       <form action="/logout" method="POST">
         <button type="submit" class="btn btn-link">Logout</button>
       </form>

@@ -4,50 +4,62 @@ const User = require('../models/user')
 
 /** GET */
 // /login form
-exports.login = async ({ isLoggedIn, isAdmin }, res, next) => {
-  if (isLoggedIn) return res.redirect('/')
+exports.login = async ({ isAuthenticated, isAdmin }, res, next) => {
+  if (isAuthenticated) return res.redirect('/')
 
-  res.render('auth/login', { pageTitle: 'Login', uri: '/login', isLoggedIn, isAdmin })
+  res.render('auth/login', { pageTitle: 'Login', uri: '/login', isAuthenticated, isAdmin })
 }
 
 // /register form
-exports.register = async ({ isLoggedIn, isAdmin }, res, next) => {
-  if (isLoggedIn) return res.redirect('/')
+exports.register = async ({ isAuthenticated, isAdmin }, res, next) => {
+  if (isAuthenticated) return res.redirect('/')
 
-  res.render('auth/register', { pageTitle: 'Register', uri: '/register', isLoggedIn, isAdmin })
+  res.render('auth/register', { pageTitle: 'Register', uri: '/register', isAuthenticated, isAdmin })
 }
 
 /** POST */
 exports.handleLogin = async ({ body, session }, res, next) => {
-  // TODO: Authenticate and redirect accordingly...
-  // FIXME: FIX THIS :)
-  if (body.email === 'joe@doe.com' && body.password === 'password') {
-    // User is authenticated and is an admin :D
-    session.isLoggedIn = true
-    session.isAdmin = true
-    await Promise.resolve(() => {
-      setTimeout(() => {
-        console.log('...')
-      }, 500)
-    })
-    res.redirect('/')
-  } else {
-    res.render('auth/login', { pageTitle: 'Login', uri: '/login' })
+  try {
+    const user = await User.findOne({ email: body.email })
+    const isAuthenticated = await bcrypt.compare(body.password, user.password)
+
+    if (isAuthenticated) {
+      session.isAuthenticated = true
+      session.isAdmin = user.isAdmin
+      session.user = {
+        _id: user._id,
+        email: user.email,
+        isAdmin: user.isAdmin,
+      }
+      return res.redirect('/')
+    } else {
+      return res.redirect('/login')
+    }
+  } catch (err) {
+    console.error(err)
+    return res.redirect('/login')
   }
 }
 
-exports.handleRegister = async ({ body, session: { isAdmin, isLoggedIn } }, res, next) => {
+exports.handleRegister = async ({ body, session }, res, next) => {
   const { email, password, 'password-confirm': confirmPassword } = body
 
   // TODO: Use proper validation...
   if (email && password === confirmPassword) {
-    const hashedPassword = await bcrypt.hash(password, 12)
     try {
+      const salt = await bcrypt.genSalt(10)
+      const hashedPassword = await bcrypt.hash(password, salt)
       const user = new User({
         email,
         password: hashedPassword,
       })
       await user.save()
+      session.isAuthenticated = true
+      session.user = {
+        _id: user._id,
+        email: user.email,
+        isAdmin: false,
+      }
       res.redirect('/')
     } catch (err) {
       console.error(err)

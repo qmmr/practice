@@ -45,7 +45,8 @@ app.use(
 
 // Custom middleware to expose user in every request
 app.use(async (req, res, next) => {
-  if (req.session.isLoggedIn) {
+  console.log('req.session: ', req.session)
+  if (req.session.isAuthenticated) {
     try {
       const email = req.session.user.email
       const user = await User.findOne({ email })
