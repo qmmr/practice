@@ -45,15 +45,17 @@ app.use(
 
 // Custom middleware to expose user in every request
 app.use(async (req, res, next) => {
-  try {
-    const USER_ID = '5d29d20158314d27093f5e41'
-    const user = await User.findById(USER_ID)
-    req.user = user
-
-    next()
-  } catch (err) {
-    console.error(err)
+  if (req.session.isLoggedIn) {
+    try {
+      const email = req.session.user.email
+      const user = await User.findOne({ email })
+      req.user = user
+    } catch (err) {
+      console.error(err)
+    }
   }
+
+  next()
 })
 
 app.use(authRoutes)
