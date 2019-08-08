@@ -3,15 +3,15 @@ const mongoose = require('mongoose')
 const userSchema = new mongoose.Schema({
   email: { type: String, minlength: 10, trim: true, required: true },
   password: { type: String, minlength: 4, trim: true, required: true },
+  isAdmin: { type: Boolean, default: false },
   cart: {
-    type: 'mixed',
-    default: { products: [] },
     products: [
       {
         product: { type: mongoose.Types.ObjectId, ref: 'Product', required: true },
         quantity: { type: Number, required: true },
       },
     ],
+    default: { products: [] },
   },
 })
 
