@@ -10,7 +10,7 @@
         <li class="list-group-item d-flex flex-column justify-content-start align-items-start">
           <p>Order id: <%= order._id.toString() %></p>
           <p>Created at: <%= order.createdAt %></p>
-          <p>User: <%= order.user.name %></p>
+          <p>User: <%= order.user.email %></p>
           <ul class="list-group checkout-list">
             <% order.products.forEach(product => { %>
             <li class="list-group-item d-flex flex-row justify-content-start align-items-center">
