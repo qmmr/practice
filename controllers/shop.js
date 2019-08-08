@@ -5,29 +5,36 @@ const Order = require('../models/order')
 
 /** GET requests */
 // Render index page of the shop
-exports.index = ({ session: { isAuthenticated, isAdmin } }, res, next) => {
-  res.render('shop/index', { pageTitle: 'Buylando', uri: '/', isAdmin, isAuthenticated })
+exports.index = (req, res, next) => {
+  const { isAuthenticated, user } = req.session
+  res.render('shop/index', { pageTitle: 'Buylando', uri: '/', isAdmin: user.isAdmin, isAuthenticated })
 }
 
 // Render all products available to buy
 exports.products = async (req, res, next) => {
-  const { isAdmin, isAuthenticated } = req.session
+  const { isAuthenticated, user } = req.session
   const products = await Product.find()
 
-  res.render('shop/products', { pageTitle: 'Products', uri: '/products', products, isAdmin, isAuthenticated })
+  res.render('shop/products', {
+    pageTitle: 'Products',
+    uri: '/products',
+    products,
+    isAdmin: user.isAdmin,
+    isAuthenticated,
+  })
 }
 
 exports.productById = async (req, res, next) => {
   const {
     params,
-    session: { isAdmin, isAuthenticated },
+    session: { isAuthenticated, user },
   } = req
   const product = await Product.findById(params.id)
 
   res.render('shop/product-details', {
     pageTitle: 'Product details',
     uri: '/products',
-    isAdmin,
+    isAdmin: user.isAdmin,
     isAuthenticated,
     product,
   })
@@ -38,16 +45,14 @@ exports.cart = async (req, res, next) => {
     // Fetch products stored as ids in cart.products array
     const {
       user,
-      session: { isAdmin, isAuthenticated },
+      session: { isAuthenticated },
     } = req
-    console.log('req.user: ', req.user, user)
     const { cart } = await user.populate('cart.products.product').execPopulate()
-    console.log('car.products: ', cart.products)
 
     res.render('shop/cart', {
       pageTitle: 'Cart products',
       uri: '/cart',
-      isAdmin,
+      isAdmin: user.isAdmin,
       isAuthenticated,
       products: cart.products,
     })
@@ -62,11 +67,17 @@ exports.orders = async (req, res, next) => {
     // TODO: Not implemented yet...
     const {
       user,
-      session: { isAdmin, isAuthenticated },
+      session: { isAuthenticated },
     } = req
     const orders = []
 
-    res.render('shop/orders', { pageTitle: 'Your orders', uri: '/orders', isAdmin, isAuthenticated, orders })
+    res.render('shop/orders', {
+      pageTitle: 'Your orders',
+      uri: '/orders',
+      isAdmin: user.isAdmin,
+      isAuthenticated,
+      orders,
+    })
   } catch (err) {
     console.error(err)
   }
@@ -78,7 +89,7 @@ exports.checkout = async (req, res, next) => {
     const {
       user,
       query,
-      session: { isAdmin, isAuthenticated },
+      session: { isAuthenticated },
     } = req
     // TODO: How many orders to fetch?
     // FIXME: Checkout should render only one cart!!! This belongs to /orders...
@@ -94,7 +105,7 @@ exports.checkout = async (req, res, next) => {
     res.render('shop/checkout', {
       pageTitle: 'Checkout',
       uri: '/checkout',
-      isAdmin,
+      isAdmin: user.isAdmin,
       isAuthenticated,
       orders: populatedOrders,
     })

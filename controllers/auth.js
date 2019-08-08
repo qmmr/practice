@@ -26,7 +26,6 @@ exports.handleLogin = async (req, res, next) => {
 
     if (isAuthenticated) {
       session.isAuthenticated = true
-      session.isAdmin = user.isAdmin
       session.user = {
         _id: user._id,
         email: user.email,
