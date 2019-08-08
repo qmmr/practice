@@ -24,7 +24,13 @@ exports.productById = async (req, res, next) => {
   } = req
   const product = await Product.findById(params.id)
 
-  res.render('shop/product-details', { pageTitle: 'Product details', uri: '/products', isAdmin, isAuthenticated, product })
+  res.render('shop/product-details', {
+    pageTitle: 'Product details',
+    uri: '/products',
+    isAdmin,
+    isAuthenticated,
+    product,
+  })
 }
 
 exports.cart = async (req, res, next) => {
@@ -38,7 +44,13 @@ exports.cart = async (req, res, next) => {
     const { cart } = await user.populate('cart.products.product').execPopulate()
     console.log('car.products: ', cart.products)
 
-    res.render('shop/cart', { pageTitle: 'Cart products', uri: '/cart', isAdmin, isAuthenticated, products: cart.products })
+    res.render('shop/cart', {
+      pageTitle: 'Cart products',
+      uri: '/cart',
+      isAdmin,
+      isAuthenticated,
+      products: cart.products,
+    })
   } catch (err) {
     console.error(err)
   }
@@ -116,9 +128,10 @@ exports.removeFromCart = async ({ body, user }, res, next) => {
 }
 
 // Copy products in the current Cart to Checkout
-exports.addToCheckout = async ({ user }, res, next) => {
+exports.addToCheckout = async (req, res, next) => {
   try {
     // Fetch products stored as ids in cart.products array
+    const user = req.user
     const { cart } = await user.populate('cart.products.product').execPopulate()
 
     console.log('addToCheckout products: ', cart.products)

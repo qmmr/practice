@@ -18,8 +18,9 @@ exports.register = async ({ isAuthenticated, isAdmin }, res, next) => {
 }
 
 /** POST */
-exports.handleLogin = async ({ body, session }, res, next) => {
+exports.handleLogin = async (req, res, next) => {
   try {
+    const { body, session } = req
     const user = await User.findOne({ email: body.email })
     const isAuthenticated = await bcrypt.compare(body.password, user.password)
 
@@ -41,8 +42,11 @@ exports.handleLogin = async ({ body, session }, res, next) => {
   }
 }
 
-exports.handleRegister = async ({ body, session }, res, next) => {
-  const { email, password, 'password-confirm': confirmPassword } = body
+exports.handleRegister = async (req, res, next) => {
+  const {
+    body: { email, password, 'password-confirm': confirmPassword },
+    session,
+  } = req
 
   // TODO: Use proper validation...
   if (email && password === confirmPassword) {
