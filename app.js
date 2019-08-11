@@ -5,6 +5,7 @@ const { ObjectId } = require('mongodb')
 const mongoose = require('mongoose')
 const session = require('express-session')
 const MongoDBStore = require('connect-mongodb-session')(session)
+const csurf = require('csurf')
 
 const adminRoutes = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
@@ -14,11 +15,15 @@ const authRoutes = require('./routes/auth')
 const User = require('./models/user')
 
 const PORT = process.env.PORT || 3000
+
+// DB constants
 const { DB_USER = 'rumoren', DB_PASSWORD, DB_NAME } = process.env
 // const MONGO_URI = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@node-complete-esmpc.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`
 const MONGO_URI = `mongodb://${DB_USER}:${DB_PASSWORD}@127.0.0.1:27017/${DB_NAME}`
 
 const app = express()
+
+// initialize session store which adds session object to each req
 const sessionStore = new MongoDBStore({
   uri: MONGO_URI,
   collection: 'sessions',
@@ -29,6 +34,7 @@ sessionStore.on('error', err => console.error(err))
 app.set('view engine', 'ejs')
 app.set('views', 'views')
 
+// use middlewares
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(
@@ -45,7 +51,6 @@ app.use(
 
 // Custom middleware to expose user in every request
 app.use(async (req, res, next) => {
-  console.log('req.session: ', req.session)
   if (req.session.isAuthenticated) {
     try {
       const email = req.session.user.email
@@ -59,6 +64,20 @@ app.use(async (req, res, next) => {
   next()
 })
 
+// CSRF protection middleware
+const csrfProtection = csurf()
+app.use(csrfProtection)
+
+// use locals to pass arguments to every render function
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.session.isAuthenticated
+  res.locals.isAdmin = req.session && req.session.user && req.session.user.isAdmin
+  res.locals.csrfToken = req.csrfToken()
+
+  next()
+})
+
+// routes
 app.use(authRoutes)
 app.use('/admin', adminRoutes)
 app.use(shopRoutes)

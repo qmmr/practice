@@ -48,6 +48,7 @@
 <%= product.description %></textarea
           >
         </div>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
         <button type="submit" class="btn btn-primary">Update product</button>
         <a href="/admin/products" class="btn btn-danger">Cancel</a>
       </form>

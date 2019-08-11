@@ -7,7 +7,7 @@ const Order = require('../models/order')
 // Render index page of the shop
 exports.index = (req, res, next) => {
   const { isAuthenticated, user } = req.session
-  res.render('shop/index', { pageTitle: 'Buylando', uri: '/', isAdmin: user.isAdmin, isAuthenticated })
+  res.render('shop/index', { pageTitle: 'Buylando', uri: '/' })
 }
 
 // Render all products available to buy
@@ -19,8 +19,6 @@ exports.products = async (req, res, next) => {
     pageTitle: 'Products',
     uri: '/products',
     products,
-    isAdmin: user.isAdmin,
-    isAuthenticated,
   })
 }
 
@@ -34,8 +32,6 @@ exports.productById = async (req, res, next) => {
   res.render('shop/product-details', {
     pageTitle: 'Product details',
     uri: '/products',
-    isAdmin: user.isAdmin,
-    isAuthenticated,
     product,
   })
 }
@@ -52,8 +48,6 @@ exports.cart = async (req, res, next) => {
     res.render('shop/cart', {
       pageTitle: 'Cart products',
       uri: '/cart',
-      isAdmin: user.isAdmin,
-      isAuthenticated,
       products: cart.products,
     })
   } catch (err) {
@@ -74,8 +68,6 @@ exports.orders = async (req, res, next) => {
     res.render('shop/orders', {
       pageTitle: 'Your orders',
       uri: '/orders',
-      isAdmin: user.isAdmin,
-      isAuthenticated,
       orders,
     })
   } catch (err) {
@@ -105,8 +97,6 @@ exports.checkout = async (req, res, next) => {
     res.render('shop/checkout', {
       pageTitle: 'Checkout',
       uri: '/checkout',
-      isAdmin: user.isAdmin,
-      isAuthenticated,
       orders: populatedOrders,
     })
   } catch (err) {

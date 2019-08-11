@@ -36,6 +36,7 @@
       <a class="nav-item nav-link <%= uri === '/register' ? 'active' : '' %>" href="/register">Register</a>
       <% } %> <% if (isAuthenticated) { %>
       <form action="/logout" method="POST">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
         <button type="submit" class="btn btn-link">Logout</button>
       </form>
       <% } %>
