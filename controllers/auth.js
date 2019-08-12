@@ -4,17 +4,20 @@ const User = require('../models/user')
 
 /** GET */
 // /login form
-exports.login = async ({ isAuthenticated, isAdmin }, res, next) => {
-  if (isAuthenticated) return res.redirect('/')
+// INFO: Cannot destructure due to issue with flash requiring session on req object...
+exports.login = async (req, res, next) => {
+  if (req.isAuthenticated) return res.redirect('/')
+  const errorMsg = req.flash('error')
+  console.log('errorMsg: ', errorMsg)
 
-  res.render('auth/login', { pageTitle: 'Login', uri: '/login', isAuthenticated, isAdmin })
+  res.render('auth/login', { pageTitle: 'Login', uri: '/login', errorMsg })
 }
 
 // /register form
-exports.register = async ({ isAuthenticated, isAdmin }, res, next) => {
+exports.register = async ({ isAuthenticated }, res, next) => {
   if (isAuthenticated) return res.redirect('/')
 
-  res.render('auth/register', { pageTitle: 'Register', uri: '/register', isAuthenticated, isAdmin })
+  res.render('auth/register', { pageTitle: 'Register', uri: '/register' })
 }
 
 /** POST */
@@ -22,6 +25,11 @@ exports.handleLogin = async (req, res, next) => {
   try {
     const { body, session } = req
     const user = await User.findOne({ email: body.email })
+
+    // Stop if no use was found
+    req.flash('error', 'Invalid credentials.')
+    if (!user) return res.redirect('/login')
+
     const isAuthenticated = await bcrypt.compare(body.password, user.password)
 
     if (isAuthenticated) {
@@ -33,6 +41,7 @@ exports.handleLogin = async (req, res, next) => {
       }
       return res.redirect('/')
     } else {
+      req.flash('error', 'Invalid credentials.')
       return res.redirect('/login')
     }
   } catch (err) {

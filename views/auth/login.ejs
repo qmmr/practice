@@ -4,6 +4,9 @@
   <body>
     <%- include('../partials/main-nav.ejs', { isAdmin }) %>
     <main>
+      <% if (errorMsg.length) { %>
+      <div class="alert alert-danger"><%= errorMsg %></div>
+      <% } %>
       <form method="POST" action="/login">
         <div class="form-group">
           <label for="email">Email address</label>

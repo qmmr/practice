@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const session = require('express-session')
 const MongoDBStore = require('connect-mongodb-session')(session)
 const csurf = require('csurf')
+const flash = require('connect-flash')
 
 const adminRoutes = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
@@ -65,8 +66,10 @@ app.use(async (req, res, next) => {
 })
 
 // CSRF protection middleware
-const csrfProtection = csurf()
-app.use(csrfProtection)
+app.use(csurf())
+
+// flash messages
+app.use(flash())
 
 // use locals to pass arguments to every render function
 app.use((req, res, next) => {
