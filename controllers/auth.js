@@ -7,8 +7,8 @@ const User = require('../models/user')
 // INFO: Cannot destructure due to issue with flash requiring session on req object...
 exports.login = async (req, res, next) => {
   if (req.isAuthenticated) return res.redirect('/')
-  const errorMsg = req.flash('error')
-  console.log('errorMsg: ', errorMsg)
+  const errors = req.flash('error')
+  const errorMsg = errors.length ? errors[0] : null
 
   res.render('auth/login', { pageTitle: 'Login', uri: '/login', errorMsg })
 }
@@ -51,6 +51,7 @@ exports.handleLogin = async (req, res, next) => {
 }
 
 exports.handleRegister = async (req, res, next) => {
+  // TODO: Flash message for validation
   const {
     body: { email, password, 'password-confirm': confirmPassword },
     session,
